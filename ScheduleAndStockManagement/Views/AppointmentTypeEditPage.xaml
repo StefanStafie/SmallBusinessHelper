@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.AppointmentTypeEditPage"
+    Title="Edit Stock Items">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <Label Text="Name" />
+            <Entry x:Name="NameEntry"
+                   Placeholder="Enter name" />
+
+            <Label Text="Duration (Minutes)" />
+            <Entry x:Name="Minutes"
+                   Placeholder="e.g. 30"
+                   Keyboard="Numeric" />
+
+            <Label Text="Price" />
+            <Entry x:Name="Price"
+                   Placeholder="e.g. 100"
+                   Keyboard="Numeric" />
+
+            <Label Text="Background Color" />
+            <Picker x:Name="BackgroundColorPicker"
+                    Title="" />
+
+            <Button Text="Save"
+                    Clicked="OnSaveClicked" />
+
+            <Button Text="Delete"
+                    Clicked="OnDeleteClicked"
+                    BackgroundColor="Red"
+                    TextColor="White" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

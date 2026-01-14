@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.EditAppointmentPage"
+    Title="Appointment">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <!-- Customer -->
+            <VerticalStackLayout>
+                <Label Text="Customer" FontAttributes="Bold"/>
+                <Entry Text="{Binding Customer}" Placeholder="Customer name"/>
+            </VerticalStackLayout>
+
+            <!-- Type -->
+            <VerticalStackLayout>
+                <Label Text="Appointment type" FontAttributes="Bold"/>
+                <Picker ItemsSource="{Binding AppointmentTypes}"
+                        SelectedItem="{Binding Type}"/>
+            </VerticalStackLayout>
+
+            <!-- Start Time -->
+            <VerticalStackLayout>
+                <Label Text="Start Time" FontAttributes="Bold"/>
+                <DatePicker Date="{Binding Start, Mode=TwoWay}"/>
+                <TimePicker Time="{Binding StartTimeOnly, Mode=TwoWay}"/>
+            </VerticalStackLayout>
+
+            <!-- Price -->
+            <VerticalStackLayout>
+                <Label Text="Price" FontAttributes="Bold"/>
+                <Entry Keyboard="Numeric" Text="{Binding Price}" Placeholder="0"/>
+            </VerticalStackLayout>
+
+            <!-- Tip -->
+            <VerticalStackLayout>
+                <Label Text="Tip" FontAttributes="Bold"/>
+                <Entry Keyboard="Numeric" Text="{Binding Tip}" Placeholder="0"/>
+            </VerticalStackLayout>
+
+            <!-- Notes -->
+            <VerticalStackLayout>
+                <Label Text="Notes" FontAttributes="Bold"/>
+                <Editor Text="{Binding Notes}" AutoSize="TextChanges" HeightRequest="100"/>
+            </VerticalStackLayout>
+
+            <!-- Buttons -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="20" Margin="0,30,0,0">
+
+                <Button Text="Save"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        Command="{Binding SaveCommand}"/>
+
+                <Button Text="Delete"
+                        BackgroundColor="#E53935"
+                        TextColor="White"
+                        Command="{Binding DeleteCommand}"
+                        Grid.Column="1"
+                        IsVisible="{Binding IsEditing}"/>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

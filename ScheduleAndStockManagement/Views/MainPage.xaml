@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ScheduleAndStockManagement.MainPage"
+             Title="Shine bright and succeed!">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="25">
+
+            <Button
+                Text="Scheduling"
+                x:Name="ScheduleBtn"
+                Clicked="OnScheduleClicked"
+                HeightRequest="80"
+                FontSize="24"
+                CornerRadius="20"
+                HorizontalOptions="Fill" />
+
+            <Button
+                Text="Stock"
+                x:Name="StockBtn"
+                Clicked="OnStockClicked"
+                HeightRequest="80"
+                FontSize="24"
+                CornerRadius="20"
+                HorizontalOptions="Fill" />
+
+            <Button
+                 Text="Customers"
+                 x:Name="CustomersBtn"
+                 Clicked="OnCustomerClicked"
+                 HeightRequest="80"
+                 FontSize="24"
+                 CornerRadius="20"
+                 HorizontalOptions="Fill" />        
+
+            <Button
+                 Text="Appointment Types"
+                 x:Name="AppointmentTypesBtn"
+                 Clicked="OnAppointmentTypesClicked"
+                 HeightRequest="80"
+                 FontSize="24"
+                 CornerRadius="20"
+                 HorizontalOptions="Fill" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

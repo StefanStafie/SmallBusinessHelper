@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.InventoryEditPage"
+    Title="Edit Stock Items">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label Text="Name" FontAttributes="Bold"/>
+            <Entry x:Name="NameEntry"
+                   Placeholder="Enter item name"/>
+
+            <Label Text="Quantity" FontAttributes="Bold"/>
+            <Entry x:Name="QtyEntry"
+                   Placeholder="Enter quantity"
+                   Keyboard="Numeric"/>
+
+            <Label Text="Unit Price" FontAttributes="Bold"/>
+            <Entry x:Name="UnitPriceEntry"
+                   Placeholder="Enter unit price"
+                   Keyboard="Numeric"/>
+
+            <Label Text="Description" FontAttributes="Bold"/>
+            <Editor x:Name="DescriptionEntry"
+                    Placeholder="Enter description"
+                    AutoSize="TextChanges"/>
+
+            <Label Text="Appointment Type" FontAttributes="Bold"/>
+            <Picker x:Name="AppointmentTypePicker"
+                    Title="Select appointment type"/>
+
+            <Label Text="Added At" FontAttributes="Bold"/>
+
+            <HorizontalStackLayout Spacing="10">
+                <DatePicker x:Name="AddedAtDatePicker"/>
+                <TimePicker x:Name="AddedAtTimePicker"/>
+            </HorizontalStackLayout>
+
+            <Button Text="Save"
+                    Clicked="OnSaveClicked"/>
+
+            <Button Text="Delete"
+                    Clicked="OnDeleteClicked"
+                    BackgroundColor="Red"
+                    TextColor="White"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.CustomerEditPage"
+    Title="Edit Customer">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label Text="Name" FontAttributes="Bold"/>
+            <Entry x:Name="NameEntry"
+                   Placeholder="Enter customer name"/>
+
+            <Label Text="Phone" FontAttributes="Bold"/>
+            <Entry x:Name="PhoneEntry"
+                   Placeholder="Enter phone number"
+                   Keyboard="Telephone"/>
+
+            <Label Text="Added At" FontAttributes="Bold"/>
+
+            <HorizontalStackLayout Spacing="10">
+                <DatePicker x:Name="AddedAtDatePicker"/>
+                <TimePicker x:Name="AddedAtTimePicker"/>
+            </HorizontalStackLayout>
+
+            <Button Text="Save"
+                    Clicked="OnSaveClicked"/>
+
+            <Button Text="Delete"
+                    Clicked="OnDeleteClicked"
+                    BackgroundColor="Red"
+                    TextColor="White"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
