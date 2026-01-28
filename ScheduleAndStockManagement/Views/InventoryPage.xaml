@@ -2,25 +2,15 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="ScheduleAndStockManagement.Views.InventoryPage"
-    Title="Stock">
+    x:Class="ScheduleAndStockManagement.Views.InventoryItemTypesPage"
+    Title="Inventory Item Types">
 
     <VerticalStackLayout Padding="10" Spacing="10">
-
-        <Label Text="Inventory"
-           FontSize="24"
-           HorizontalOptions="Center" />
-
-        <HorizontalStackLayout Spacing="10" 
-                               HorizontalOptions="Center">
-            <Button Text="Purchase/Sale" 
-                    x:Name="ItemTransactionButton"
-                    Clicked="OnItemTransactionClicked"/>
-            <Button Text="Add Item Type" 
-                    x:Name="AddItemType"
-                    Clicked="OnAddItemTypeClicked"/>
-        </HorizontalStackLayout>
         
+        <Button Text="Add Item Type" 
+                x:Name="AddItemType"
+                Clicked="OnAddItemTypeClicked"/>
+
         <Grid ColumnSpacing="10" Padding="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*" />
@@ -28,9 +18,9 @@
                 <ColumnDefinition Width="10*" />
             </Grid.ColumnDefinitions>
 
-            <Label Text="Was Sold?" FontAttributes="Bold" Grid.Column="0"/>
+            <Label Text="For Sale?" FontAttributes="Bold" Grid.Column="0"/>
             <Label Text="Name" FontAttributes="Bold" Grid.Column="1"/>
-            <Label Text="Added At" FontAttributes="Bold" Grid.Column="5"/>
+            <Label Text="Description" FontAttributes="Bold" Grid.Column="5"/>
         </Grid>
 
 
@@ -50,9 +40,9 @@
                                     <ColumnDefinition Width="10*" />
                                 </Grid.ColumnDefinitions>
 
-                                <CheckBox IsChecked="{Binding WasSold}" VerticalOptions="Center" Grid.Column="0" InputTransparent="True" />
+                                <CheckBox IsChecked="{Binding ForSale}" VerticalOptions="Center" Grid.Column="0" InputTransparent="True" />
                                 <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="{Binding AppointmentType.TextColor}" Grid.Column="1"/>
-                                <Label Text="{Binding AddedAt, StringFormat='{0:dd.MM.yyyy HH:mm}'}" TextColor="{Binding AppointmentType.TextColor}" FontSize="12" Grid.Column="5"/>
+                                <Label Text="{Binding Description}" TextColor="{Binding AppointmentType.TextColor}" FontSize="12" Grid.Column="5"/>
                             </Grid>
 
                         </StackLayout>

@@ -13,11 +13,11 @@ public partial class InventoryItemTransactionEditPage : ContentPage
         InitializeComponent();
 
         this.saveCallback = saveCallback;
-        isNew = item == null;
+        this.isNew = item is null;
 
         inventoryItem = item ?? new InventoryItemTransaction
         {
-            InventoryItemType = InventoryPage.InventoryItemsForSale.FirstOrDefault(),
+            InventoryItemType = InventoryItemTransactionsPage.InventoryItemsForSale.FirstOrDefault(),
             Quantity = 1,
             UnitPrice = 0,
             AddedAt = DateTime.Now,
@@ -32,26 +32,27 @@ public partial class InventoryItemTransactionEditPage : ContentPage
         QtyEntry.Text = inventoryItem.Quantity.ToString();
         UnitPriceEntry.Text = inventoryItem.UnitPrice.ToString();
         DescriptionEntry.Text = inventoryItem.InventoryItemType?.Description;
-        this.WasSoldCheckBox.IsChecked = inventoryItem.WasSold;
+        WasSoldCheckBox.IsChecked = inventoryItem.WasSold;
+        WasBoughtCheckBox.IsChecked = !inventoryItem.WasSold;
         AddedAtDatePicker.Date = inventoryItem.AddedAt.Date;
         AddedAtTimePicker.Time = inventoryItem.AddedAt.TimeOfDay;
 
-        InventoryItemTypePicker.ItemsSource = InventoryPage.InventoryItemsForSale;
+        InventoryItemTypePicker.ItemsSource = InventoryItemTransactionsPage.InventoryItemsForSale;
         if (isNew)
         {
-            InventoryItemTypePicker.SelectedItem = InventoryPage.InventoryItemsForSale.FirstOrDefault();
+            InventoryItemTypePicker.SelectedItem = InventoryItemTransactionsPage.InventoryItemsForSale.FirstOrDefault();
         }
         else
         {
-            InventoryItemTypePicker.SelectedItem = inventoryItem;
+            var index = InventoryItemTransactionsPage.InventoryItemsForSale.FindIndex(x => x.Id == inventoryItem.InventoryItemType.Id);
+            InventoryItemTypePicker.SelectedIndex = index;
         }
 
-
-        AppointmentTypePicker.ItemsSource = InventoryPage.PossibleAppointmentTypes;
+        AppointmentTypePicker.ItemsSource = InventoryItemTransactionsPage.PossibleAppointmentTypes;
         AppointmentTypePicker.SelectedItem = inventoryItem.InventoryItemType?.AppointmentType;
     }
 
-    void OnPickerSelectedIndexChanged(object sender, EventArgs e)
+    void OnInventoryItemTypePickerSelectedIndexChanged(object sender, EventArgs e)
     {
         var picker = (Picker)sender;
         InventoryItemType selectedItem = (InventoryItemType)picker.SelectedItem;

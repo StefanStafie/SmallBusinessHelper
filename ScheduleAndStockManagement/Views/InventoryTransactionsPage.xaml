@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.InventoryItemTransactionsPage"
+    Title="Transactions">
+
+    <VerticalStackLayout Padding="10" Spacing="10">
+
+        <Label Text="Inventory"
+           FontSize="24"
+           HorizontalOptions="Center" />
+
+        <Button Text="Add Purchase/Sale" 
+                x:Name="AddItemTransaction"
+                Clicked="OnAddItemTransactionClicked"/>
+
+        <Grid ColumnSpacing="5" Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Was Sold?" FontAttributes="Bold" Grid.Column="0"/>
+            <Label Text="Name" FontAttributes="Bold" Grid.Column="1"/>
+            <Label Text="Quantity" FontAttributes="Bold" Grid.Column="2"/>
+            <Label Text="UnitPrice" FontAttributes="Bold" Grid.Column="3"/>
+            <Label Text="Date" FontAttributes="Bold" Grid.Column="4"/>
+        </Grid>
+
+
+        <CollectionView x:Name="InventoryList"
+                        SelectionMode="Single"
+                        SelectionChanged="OnItemSelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeThickness="0"
+                            BackgroundColor="{Binding InventoryItemType.AppointmentType.BackgroundColor}"
+                                Padding="0">
+                        <StackLayout Spacing="0">
+                            <Grid ColumnSpacing="5" Padding="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="10*" />
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="5*" />
+                                    <ColumnDefinition Width="5*" />
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox IsChecked="{Binding WasSold}" VerticalOptions="Center" InputTransparent="True" Grid.Column="0"/>
+                                <Label Text="{Binding InventoryItemType}" FontAttributes="Bold" TextColor="{Binding InventoryItemType.AppointmentType.TextColor}" Grid.Column="1"/>
+                                <Label Text="{Binding Quantity}" TextColor="{Binding InventoryItemType.AppointmentType.TextColor}"  Grid.Column="2"/>
+                                <Label Text="{Binding UnitPrice}" TextColor="{Binding InventoryItemType.AppointmentType.TextColor}" Grid.Column="3"/>
+                                <Label Text="{Binding AddedAt}" TextColor="{Binding InventoryItemType.AppointmentType.TextColor}" Grid.Column="4"/>
+                            </Grid>
+
+                        </StackLayout>
+
+                    </Border>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+
+</ContentPage>

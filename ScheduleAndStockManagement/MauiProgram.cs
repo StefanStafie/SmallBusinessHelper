@@ -37,7 +37,8 @@ namespace ScheduleAndStockManagement
             builder.Services.AddSingleton<CustomerService>();
             builder.Services.AddSingleton<MeetingService>();
 
-            builder.Services.AddTransient<InventoryPage>();
+            builder.Services.AddTransient<InventoryItemTypesPage>();
+            builder.Services.AddTransient<InventoryItemTransactionsPage>();
             builder.Services.AddTransient<AppointmentTypePage>();
             builder.Services.AddTransient<CustomerPage>();
             builder.Services.AddTransient<EditMeetingPage>();

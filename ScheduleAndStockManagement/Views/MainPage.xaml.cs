@@ -17,7 +17,7 @@ namespace ScheduleAndStockManagement
 
         private async void OnStockClicked(object? sender, EventArgs e)
         {
-            InventoryPage? inventoryPage = App.Services.GetService<InventoryPage>();
+            InventoryItemTypesPage? inventoryPage = App.Services.GetService<InventoryItemTypesPage>();
             await Navigation.PushAsync(inventoryPage);
         }
         private async void OnAppointmentTypesClicked(object? sender, EventArgs e)
@@ -30,6 +30,12 @@ namespace ScheduleAndStockManagement
         {
             CustomerPage? customerPage = App.Services.GetService<CustomerPage>();
             await Navigation.PushAsync(customerPage);
+        }
+
+        private async void OnInventoryItemTransactionsButtonClicked(object? sender, EventArgs e)
+        {
+            InventoryItemTransactionsPage? transactionsPage = App.Services.GetService<InventoryItemTransactionsPage>();
+            await Navigation.PushAsync(transactionsPage);
         }
     }
 }

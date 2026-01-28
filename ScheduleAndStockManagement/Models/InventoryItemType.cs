@@ -7,7 +7,7 @@ namespace ScheduleAndStockManagement.Models
         public int Id { get; set; }
 
         [ObservableProperty]
-        private string name = null!;
+        private string name = string.Empty;
 
         [ObservableProperty]
         private AppointmentType appointmentType = new AppointmentType();

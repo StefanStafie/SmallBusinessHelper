@@ -18,7 +18,7 @@ public partial class InventoryItemTypeEditPage : ContentPage
         inventoryItemType = item ?? new InventoryItemType
         {
             Name = string.Empty,
-            AppointmentType = InventoryPage.PossibleAppointmentTypes.First(),
+            AppointmentType = InventoryItemTypesPage.PossibleAppointmentTypes.First(),
             Description = string.Empty,
             ForSale = false,
         };
@@ -31,7 +31,7 @@ public partial class InventoryItemTypeEditPage : ContentPage
         NameEntry.Text = inventoryItemType.Name;
         DescriptionEntry.Text = inventoryItemType.Description;
         ForSaleCheckbox.IsChecked = inventoryItemType.ForSale;
-        AppointmentTypePicker.ItemsSource = InventoryPage.PossibleAppointmentTypes;
+        AppointmentTypePicker.ItemsSource = InventoryItemTypesPage.PossibleAppointmentTypes;
         AppointmentTypePicker.SelectedItem = inventoryItemType.AppointmentType;
     }
 

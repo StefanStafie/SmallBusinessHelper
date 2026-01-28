@@ -15,15 +15,15 @@
                 FontSize="24"
                 CornerRadius="20"
                 HorizontalOptions="Fill" />
-
+            
             <Button
-                Text="Stock"
-                x:Name="StockBtn"
-                Clicked="OnStockClicked"
-                HeightRequest="80"
-                FontSize="24"
-                CornerRadius="20"
-                HorizontalOptions="Fill" />
+                  Text="Inventory Item Transactions"
+                  x:Name="InventoryItemTransactionsButton"
+                  Clicked="OnInventoryItemTransactionsButtonClicked"
+                  HeightRequest="80"
+                  FontSize="24"
+                  CornerRadius="20"
+                  HorizontalOptions="Fill" />
 
             <Button
                  Text="Customers"
@@ -32,8 +32,17 @@
                  HeightRequest="80"
                  FontSize="24"
                  CornerRadius="20"
-                 HorizontalOptions="Fill" />        
+                 HorizontalOptions="Fill" />
 
+            <Button
+                Text="Inventory Item Types"
+                x:Name="StockBtn"
+                Clicked="OnStockClicked"
+                HeightRequest="80"
+                FontSize="24"
+                CornerRadius="20"
+                HorizontalOptions="Fill" />
+            
             <Button
                  Text="Appointment Types"
                  x:Name="AppointmentTypesBtn"
