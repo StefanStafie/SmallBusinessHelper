@@ -4,8 +4,8 @@ namespace ScheduleAndStockManagement.Views;
 
 public partial class AppointmentTypeEditPage : ContentPage
 {
-    private readonly AppointmentType _item;
-    private readonly bool _isNew;
+    private readonly AppointmentType appointmentTypeItem;
+    private readonly bool isNew;
     private readonly Action<AppointmentType, bool, bool> _saveCallback;
 
     internal AppointmentTypeEditPage(AppointmentType? item, Action<AppointmentType, bool, bool> saveCallback)
@@ -13,42 +13,40 @@ public partial class AppointmentTypeEditPage : ContentPage
         InitializeComponent();
 
         _saveCallback = saveCallback;
-        _isNew = item == null;
+        isNew = item == null;
 
-        _item = item ?? new AppointmentType
+        this.appointmentTypeItem = item ?? new AppointmentType
         {
-            Id = AppointmentTypePage.NextAppointmentId,
             EventName = string.Empty,
             ColorSchemeHex = 0xFF00FFFF,
             DurationMinutes = 60
         }; 
-        
 
         LoadData();
     }
 
     private void LoadData()
     {
-        NameEntry.Text = _item.EventName;
-        Minutes.Text = _item.DurationMinutes.ToString();
-        Price.Text = _item.PriceLei.ToString();
-        colorPicker.SelectedColor = Color.FromUint(_item.ColorSchemeHex);
+        NameEntry.Text = appointmentTypeItem.EventName;
+        Minutes.Text = appointmentTypeItem.DurationMinutes.ToString();
+        Price.Text = appointmentTypeItem.PriceLei.ToString();
+        colorPicker.SelectedColor = Color.FromUint(appointmentTypeItem.ColorSchemeHex);
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
     {
-        _item.EventName = NameEntry.Text;
-        _item.DurationMinutes = (int)float.Parse(Minutes.Text);
-        _item.PriceLei = (int)float.Parse(Price.Text);
-       _item.ColorSchemeHex = colorPicker.SelectedColor.ToUint();
+        appointmentTypeItem.EventName = NameEntry.Text;
+        appointmentTypeItem.DurationMinutes = (int)float.Parse(Minutes.Text);
+        appointmentTypeItem.PriceLei = (int)float.Parse(Price.Text);
+       appointmentTypeItem.ColorSchemeHex = colorPicker.SelectedColor.ToUint();
 
-        _saveCallback(_item, _isNew, false);
+        _saveCallback(appointmentTypeItem, isNew, false);
         _ = await Navigation.PopAsync();
     }
 
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
-        _saveCallback(_item, true, true);
+        _saveCallback(appointmentTypeItem, true, true);
         _ = await Navigation.PopAsync();
     }
 }

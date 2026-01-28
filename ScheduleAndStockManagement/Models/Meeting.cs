@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using ScheduleAndStockManagement.Intefaces;
 
 namespace ScheduleAndStockManagement.Models
 {
-    public partial class Meeting : ObservableObject
+    public partial class Meeting : ObservableObject, IMoneyMaker
     {
         [ObservableProperty]
         private int id = 0;
@@ -55,6 +56,16 @@ namespace ScheduleAndStockManagement.Models
         public override string ToString()
         {
             return $"{EventNameAndCustomer}";
+        }
+
+        public int CalculateEarnings()
+        {
+            return PriceLei + TipAmount;
+        }
+
+        public DateTime EarningDateTime()
+        {
+            return From;
         }
     }
 }

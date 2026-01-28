@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.InventoryItemTypeEditPage"
+    Title="Edit Inventory Item">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label Text="Name" FontAttributes="Bold"/>
+            <Entry x:Name="NameEntry"
+                   Placeholder="Enter item name"/>
+
+            <Label Text="Appointment Type" FontAttributes="Bold"/>
+            <Picker x:Name="AppointmentTypePicker"
+                    Title="Select appointment type"/>
+
+            <Label Text="For Sale?" FontAttributes="Bold"/>
+            <CheckBox x:Name="ForSaleCheckbox"/>
+
+            <Label Text="Description" FontAttributes="Bold"/>
+            <Editor x:Name="DescriptionEntry"
+                    Placeholder="Enter description"
+                    AutoSize="TextChanges"/>
+
+            <Button Text="Save"
+                    Clicked="OnSaveClicked"/>
+
+            <Button Text="Delete"
+                    Clicked="OnDeleteClicked"
+                    BackgroundColor="Red"
+                    TextColor="White"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

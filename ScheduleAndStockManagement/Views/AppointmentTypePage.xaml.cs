@@ -10,23 +10,6 @@ public partial class AppointmentTypePage : ContentPage
 {
     private readonly AppointmentTypeService _service;
     internal ObservableCollection<AppointmentType> Items { get; set; } = [];
-    private static readonly object appointmentLock = new();
-
-    public static int NextAppointmentId
-    {
-        get
-        {
-            lock (appointmentLock)
-            {
-                field++;
-                return field;
-            }
-        }
-        set
-        {
-            field = value;
-        }
-    } = 0;
 
     public static IList PossibleBackgroundColors { get; } = GetAllSolidColorBrushes();
 
@@ -46,7 +29,6 @@ public partial class AppointmentTypePage : ContentPage
 
         Items = new ObservableCollection<AppointmentType>(_service.GetItemsAsync().Result);
         AppointmentTypeList.ItemsSource = Items;
-        NextAppointmentId = Items.Count > 0 ? Items.Max(i => i.Id) : 0;
     }
 
     private async void OnAddClicked(object sender, EventArgs e)

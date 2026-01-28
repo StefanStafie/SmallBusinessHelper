@@ -25,12 +25,14 @@ namespace ScheduleAndStockManagement
 
             builder.Services.AddDbContext<AppDbContext>();
 
-            builder.Services.AddSingleton<IGeneralRepository<Inventory>, InventoryRepository>();
+            builder.Services.AddSingleton<IGeneralRepository<InventoryItemType>, InventoryItemTypeRepository>();
+            builder.Services.AddSingleton<IGeneralRepository<InventoryItemTransaction>, InventoryItemTransactionRepository>();
             builder.Services.AddSingleton<IGeneralRepository<AppointmentType>, AppointmentTypeRepository>();
             builder.Services.AddSingleton<IGeneralRepository<Customer>, CustomerRepository>();
             builder.Services.AddSingleton<IGeneralRepository<Meeting>, MeetingRepository>();
 
-            builder.Services.AddSingleton<InventoryService>();
+            builder.Services.AddSingleton<InventoryItemTypeService>();
+            builder.Services.AddSingleton<InventoryItemTransactionService>();
             builder.Services.AddSingleton<AppointmentTypeService>();
             builder.Services.AddSingleton<CustomerService>();
             builder.Services.AddSingleton<MeetingService>();

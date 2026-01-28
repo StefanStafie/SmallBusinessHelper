@@ -10,24 +10,6 @@ public partial class CustomerPage : ContentPage
 
     private readonly CustomerService _customerService;
 
-    private static readonly object customerLock = new();
-
-    public static int NextCustomerId
-    {
-        get
-        {
-            lock (customerLock)
-            {
-                field++;
-                return field;
-            }
-        }
-        set
-        {
-            field = value;
-        }
-    } = 0;
-
     public CustomerPage(CustomerService customerService)
     {
         InitializeComponent();
@@ -39,10 +21,6 @@ public partial class CustomerPage : ContentPage
         );
 
         CustomerList.ItemsSource = Items;
-
-        NextCustomerId = Items.Count > 0
-            ? Items.Max(c => c.Id)
-            : 0;
     }
 
     private async void OnAddClicked(object sender, EventArgs e)

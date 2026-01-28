@@ -17,7 +17,6 @@ public partial class CustomerEditPage : ContentPage
 
         _item = item ?? new Customer
         {
-            Id = CustomerPage.NextCustomerId,
             Name = string.Empty,
             Phone = string.Empty,
             AddedAt = DateTime.Now

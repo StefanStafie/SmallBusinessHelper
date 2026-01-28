@@ -2,18 +2,12 @@
 
 namespace ScheduleAndStockManagement.Models
 {
-    public partial class Inventory : ObservableObject
+    public partial class InventoryItemType : ObservableObject
     {
         public int Id { get; set; }
 
         [ObservableProperty]
         private string name = null!;
-
-        [ObservableProperty]
-        private int quantity = 0;
-
-        [ObservableProperty]
-        private int unitPrice = 0;
 
         [ObservableProperty]
         private AppointmentType appointmentType = new AppointmentType();
@@ -22,15 +16,11 @@ namespace ScheduleAndStockManagement.Models
         private string description = string.Empty;
 
         [ObservableProperty]
-        private DateTime addedAt = DateTime.Now;
-
-        [ObservableProperty]
         private bool forSale = false;
-
-
-        public int TotalPrice
+        
+        public override string ToString()
         {
-            get => Quantity * UnitPrice;
+            return Name;
         }
     }
 }

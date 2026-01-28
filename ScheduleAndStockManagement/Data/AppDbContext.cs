@@ -7,7 +7,8 @@ public class AppDbContext : DbContext
 {
     private readonly string _dbPath;
 
-    public DbSet<Inventory> InventoryItems { get; set; }
+    public DbSet<InventoryItemType> InventoryItemTypes { get; set; }
+    public DbSet<InventoryItemTransaction> InventoryItemTransactions { get; set; }
     public DbSet<Customer> Customers { get; set; }
     public DbSet<AppointmentType> AppointmentTypes { get; set; }
     public DbSet<Meeting> Meetings { get; set; }

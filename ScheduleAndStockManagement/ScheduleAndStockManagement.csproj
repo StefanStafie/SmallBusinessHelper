@@ -57,7 +57,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="ViewModels\EditAppointmentViewModel.cs" />
 	  <Compile Remove="Views\EditAppointmentPage.xaml.cs" />
 	</ItemGroup>
 
@@ -95,6 +94,12 @@
 	  <Compile Update="Views\GraphsAndReports.xaml.cs">
 	    <DependentUpon>GraphsAndReports.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\InventoryItemTransactionEditPage.xaml.cs">
+	    <DependentUpon>InventoryItemTransactionEditPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\InventoryItemTypeEditPage.xaml.cs">
+	    <DependentUpon>InventoryItemTypeEditPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\SchedulingAssistant.xaml.cs">
 	    <DependentUpon>SchedulingAssistant.xaml</DependentUpon>
 	  </Compile>
@@ -113,7 +118,10 @@
 	  <MauiXaml Update="Views\EditMeetingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\InventoryEditPage.xaml">
+	  <MauiXaml Update="Views\InventoryItemTransactionEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\InventoryItemTypeEditPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\AppointmentTypePage.xaml">

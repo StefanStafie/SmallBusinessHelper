@@ -3,26 +3,26 @@ using ScheduleAndStockManagement.Models;
 
 namespace ScheduleAndStockManagement.Services
 {
-    public class InventoryService
+    public class InventoryItemTypeService
     {
-        private readonly IGeneralRepository<Inventory> _repo;
+        private readonly IGeneralRepository<InventoryItemType> _repo;
 
-        public InventoryService(IGeneralRepository<Inventory> repo)
+        public InventoryItemTypeService(IGeneralRepository<InventoryItemType> repo)
         {
             _repo = repo;
         }
 
-        public Task<List<Inventory>> GetItemsAsync()
+        public Task<List<InventoryItemType>> GetItemsAsync()
         {
             return _repo.GetAllAsync();
         }
 
-        public Task AddItemAsync(Inventory item)
+        public Task AddItemAsync(InventoryItemType item)
         {
             return _repo.AddAsync(item);
         }
 
-        public Task UpdateItemAsync(Inventory item)
+        public Task UpdateItemAsync(InventoryItemType item)
         {
             return _repo.UpdateAsync(item);
         }

@@ -2,38 +2,44 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="ScheduleAndStockManagement.Views.InventoryEditPage"
-    Title="Edit Stock Items">
+    x:Class="ScheduleAndStockManagement.Views.InventoryItemTransactionEditPage"
+    Title="Edit Sold Item">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="14">
 
             <Label Text="Name" FontAttributes="Bold"/>
-            <Entry x:Name="NameEntry"
-                   Placeholder="Enter item name"/>
+            <Picker x:Name="InventoryItemTypePicker" SelectedIndexChanged="OnInventoryItemTypePickerSelectedIndexChanged"/>
 
             <Label Text="Quantity" FontAttributes="Bold"/>
             <Entry x:Name="QtyEntry"
-                   Placeholder="Enter quantity"
-                   Keyboard="Numeric"/>
+                    Placeholder="Enter quantity"
+                    Keyboard="Numeric"/>
 
             <Label Text="Unit Price" FontAttributes="Bold"/>
             <Entry x:Name="UnitPriceEntry"
-                   Placeholder="Enter unit price"
-                   Keyboard="Numeric"/>
+                    Placeholder="Enter unit price"
+                    Keyboard="Numeric"/>
 
+            <HorizontalStackLayout Spacing="10">
+                <RadioButton Content="Sale" x:Name="WasSoldCheckBox"/>
+                <RadioButton Content="Purchase" x:Name="WasBoughtCheckBox"/>
+            </HorizontalStackLayout>
+            
             <Label Text="Description" FontAttributes="Bold"/>
             <Editor x:Name="DescriptionEntry"
                     Placeholder="Enter description"
-                    AutoSize="TextChanges"/>
+                    AutoSize="TextChanges"
+                    InputTransparent="True"/>
 
             <Label Text="Appointment Type" FontAttributes="Bold"/>
             <Picker x:Name="AppointmentTypePicker"
-                    Title="Select appointment type"/>
+                    Title="Select appointment type"
+                    InputTransparent="True"/>
 
-            <Label Text="Added At" FontAttributes="Bold"/>
-
-            <HorizontalStackLayout Spacing="10">
+            <Label Text="Transaction Date" FontAttributes="Bold"/>
+            <HorizontalStackLayout Spacing="10" 
+                                   HorizontalOptions="Center">
                 <DatePicker x:Name="AddedAtDatePicker"/>
                 <TimePicker x:Name="AddedAtTimePicker"/>
             </HorizontalStackLayout>

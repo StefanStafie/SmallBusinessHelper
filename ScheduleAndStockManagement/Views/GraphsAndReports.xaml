@@ -1,0 +1,8 @@
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
+    x:Class="ScheduleAndStockManagement.Views.GraphsAndReports"
+    Title="Graphs and Reports">
+
+</ContentPage>
