@@ -3,47 +3,47 @@ using ScheduleAndStockManagement.Models;
 
 namespace ScheduleAndStockManagement.Data
 {
-    public class CustomerRepository : IGeneralRepository<Customer>
+    public class MeetingRepository : IGeneralRepository<Meeting>
     {
         private readonly AppDbContext _context;
 
-        public CustomerRepository(AppDbContext context)
+        public MeetingRepository(AppDbContext context)
         {
             _context = context;
             _ = _context.Database.EnsureCreated();
         }
 
-        public async Task<List<Customer>> GetAllAsync()
+        public async Task<List<Meeting>> GetAllAsync()
         {
-            return await _context.Customers.ToListAsync();
+            return await _context.Meetings.ToListAsync();
         }
 
-        public async Task<Customer> GetByIdAsync(int id)
+        public async Task<Meeting> GetByIdAsync(int id)
         {
-            return await _context.Customers.FindAsync(id);
+            return await _context.Meetings.FindAsync(id);
         }
 
-        public async Task AddAsync(Customer item)
+        public async Task AddAsync(Meeting item)
         {
-            _ = _context.Customers.Add(item);
+            _ = _context.Meetings.Add(item);
             _ = await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Customer item)
+        public async Task UpdateAsync(Meeting item)
         {
-            _ = _context.Customers.Update(item);
+            _ = _context.Meetings.Update(item);
             _ = await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            Customer? item = await _context.Customers.FindAsync(id);
+            Meeting? item = await _context.Meetings.FindAsync(id);
             if (item is null)
             {
                 return;
             }
 
-            _ = _context.Customers.Remove(item);
+            _ = _context.Meetings.Remove(item);
             _ = await _context.SaveChangesAsync();
         }
     }

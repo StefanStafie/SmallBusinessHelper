@@ -4,9 +4,9 @@ namespace ScheduleAndStockManagement.Views;
 
 public partial class CustomerEditPage : ContentPage
 {
-    private Customer _item;
-    private bool _isNew;
-    private Action<Customer, bool, bool> _saveCallback;
+    private readonly Customer _item;
+    private readonly bool _isNew;
+    private readonly Action<Customer, bool, bool> _saveCallback;
 
     internal CustomerEditPage(Customer? item, Action<Customer, bool, bool> saveCallback)
     {
@@ -43,15 +43,6 @@ public partial class CustomerEditPage : ContentPage
                             .AddTicks(AddedAtTimePicker.Time.Value.Ticks);
 
         _saveCallback(_item, _isNew, false);
-        await Navigation.PopAsync();
-    }
-
-    private async void OnDeleteClicked(object sender, EventArgs e)
-    {
-        bool confirm = await DisplayAlert("Delete", "Are you sure?", "Yes", "No");
-        if (!confirm) return;
-
-        _saveCallback(_item, true, true);
-        await Navigation.PopAsync();
+        _ = await Navigation.PopAsync();
     }
 }

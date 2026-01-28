@@ -12,10 +12,25 @@ namespace ScheduleAndStockManagement.Services
             _repo = repo;
         }
 
-        public Task<List<Customer>> GetItemsAsync() => _repo.GetAllAsync();
-        public Task AddItemAsync(Customer item) => _repo.AddAsync(item);
-        public Task UpdateItemAsync(Customer item) => _repo.UpdateAsync(item);
-        public Task DeleteItemAsync(int id) => _repo.DeleteAsync(id);
+        public Task<List<Customer>> GetItemsAsync()
+        {
+            return _repo.GetAllAsync();
+        }
+
+        public Task AddItemAsync(Customer item)
+        {
+            return _repo.AddAsync(item);
+        }
+
+        public Task UpdateItemAsync(Customer item)
+        {
+            return _repo.UpdateAsync(item);
+        }
+
+        public Task DeleteItemAsync(int id)
+        {
+            return _repo.DeleteAsync(id);
+        }
     }
 
 }

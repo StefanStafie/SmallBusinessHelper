@@ -80,6 +80,8 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.11" />
 		<PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.11" />
+		<PackageReference Include="Syncfusion.Maui.Inputs" Version="32.1.24" />
+		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="32.1.23" />
 		<PackageReference Include="XCalendar.Maui" Version="4.6.0" />
 	</ItemGroup>
 
@@ -89,6 +91,9 @@
 	  </Compile>
 	  <Compile Update="Views\AppointmentTypeEditPage.xaml.cs">
 	    <DependentUpon>AppointmentTypeEditPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\GraphsAndReports.xaml.cs">
+	    <DependentUpon>GraphsAndReports.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\SchedulingAssistant.xaml.cs">
 	    <DependentUpon>SchedulingAssistant.xaml</DependentUpon>
@@ -105,6 +110,9 @@
 	  <MauiXaml Update="Views\CustomerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EditMeetingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\InventoryEditPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -112,6 +120,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\InventoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GraphsAndReports.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SchedulingAssistant.xaml">

@@ -1,5 +1,5 @@
-﻿using ScheduleAndStockManagement.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ScheduleAndStockManagement.Models;
 
 namespace ScheduleAndStockManagement.Data
 {
@@ -10,7 +10,7 @@ namespace ScheduleAndStockManagement.Data
         public AppointmentTypeRepository(AppDbContext context)
         {
             _context = context;
-            _context.Database.EnsureCreated();
+            _ = _context.Database.EnsureCreated();
         }
 
         public async Task<List<AppointmentType>> GetAllAsync()
@@ -25,22 +25,26 @@ namespace ScheduleAndStockManagement.Data
 
         public async Task AddAsync(AppointmentType item)
         {
-            _context.AppointmentTypes.Add(item);
-            await _context.SaveChangesAsync();
+            _ = _context.AppointmentTypes.Add(item);
+            _ = await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(AppointmentType item)
         {
-            _context.AppointmentTypes.Update(item);
-            await _context.SaveChangesAsync();
+            _ = _context.AppointmentTypes.Update(item);
+            _ = await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var item = await _context.AppointmentTypes.FindAsync(id);
-            if (item is null) return;
-            _context.AppointmentTypes.Remove(item);
-            await _context.SaveChangesAsync();
+            AppointmentType? item = await _context.AppointmentTypes.FindAsync(id);
+            if (item is null)
+            {
+                return;
+            }
+
+            _ = _context.AppointmentTypes.Remove(item);
+            _ = await _context.SaveChangesAsync();
         }
     }
 }

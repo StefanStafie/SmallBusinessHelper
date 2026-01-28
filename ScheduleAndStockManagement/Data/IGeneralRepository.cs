@@ -1,6 +1,4 @@
-﻿using ScheduleAndStockManagement.Models;
-
-namespace ScheduleAndStockManagement.Data
+﻿namespace ScheduleAndStockManagement.Data
 {
     public interface IGeneralRepository<T>
     {

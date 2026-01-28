@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace ScheduleAndStockManagement
+namespace ScheduleAndStockManagement.Platforms.Android
 {
     [Application]
     public class MainApplication : MauiApplication
@@ -11,6 +11,9 @@ namespace ScheduleAndStockManagement
         {
         }
 
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        protected override MauiApp CreateMauiApp()
+        {
+            return MauiProgram.CreateMauiApp();
+        }
     }
 }

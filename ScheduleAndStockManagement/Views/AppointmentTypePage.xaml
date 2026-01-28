@@ -3,14 +3,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="ScheduleAndStockManagement.Views.AppointmentTypePage"
-    Title="Stock">
+    Title="Appointment Types">
 
     <VerticalStackLayout Padding="10" Spacing="10">
-
-        <Label Text="Appointment Types"
-           FontSize="24"
-           HorizontalOptions="Center" />
-
         <Button Text="Add Item" 
             x:Name="AddButton"
             Clicked="OnAddClicked"/>
@@ -36,8 +31,8 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Border StrokeThickness="0"
-                    BackgroundColor="{Binding BackgroundColor}"
-                    Padding="0">
+                        BackgroundColor="{Binding BackgroundColor}"
+                        Padding="0">
 
                         <Grid RowSpacing="0" Padding="5">
                             <Grid.RowDefinitions>
@@ -54,17 +49,21 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Label Text="{Binding EventName}"
-                               FontAttributes="Bold"
-                               Grid.Column="0"/>
+                                    FontAttributes="Bold"
+                                    TextColor="{Binding TextColor}"   
+                                    Grid.Column="0"/>
 
                                 <Label Text="{Binding DurationMinutes}"
-                               Grid.Column="1"/>
+                                    TextColor="{Binding TextColor}"   
+                                    Grid.Column="1"/>
                                 
                                 <Label Text="{Binding PriceLei}"
+                                    TextColor="{Binding TextColor}"   
                                     Grid.Column="2"/>
 
-                                <Label Text="{Binding BackgroundColor}"
-                               Grid.Column="3"/>
+                                <Label Text="{Binding ColorSchemeHex}"
+                                    TextColor="{Binding TextColor}"   
+                                    Grid.Column="3"/>
                             </Grid>
 
                             <BoxView BackgroundColor="White"

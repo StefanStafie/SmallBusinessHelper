@@ -2,28 +2,42 @@ using ScheduleAndStockManagement.Models;
 using ScheduleAndStockManagement.Services;
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Reflection;
 
 namespace ScheduleAndStockManagement.Views;
 
 public partial class AppointmentTypePage : ContentPage
 {
-    private AppointmentTypeService _service;
-    internal ObservableCollection<AppointmentType> Items { get; set; } = new ObservableCollection<AppointmentType>();
-    private static object appointmentLock = new object();
-    private static int _lastAppointmentId = 0;
+    private readonly AppointmentTypeService _service;
+    internal ObservableCollection<AppointmentType> Items { get; set; } = [];
+    private static readonly object appointmentLock = new();
+
     public static int NextAppointmentId
     {
         get
         {
             lock (appointmentLock)
             {
-                _lastAppointmentId++;
-                return _lastAppointmentId;
+                field++;
+                return field;
             }
         }
-    }
+        set
+        {
+            field = value;
+        }
+    } = 0;
 
-    public static IList PossibleBackgroundColors { get; } = new List<string> { "Red", "Green", "Blue", "Black", "Yellow", "Orange", "Violet" };
+    public static IList PossibleBackgroundColors { get; } = GetAllSolidColorBrushes();
+
+    public static List<string> GetAllSolidColorBrushes()
+    {
+        return typeof(Colors)
+            .GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(f => f.FieldType == typeof(Color))
+            .Select(f => f.Name)
+            .ToList();
+    }
 
     public AppointmentTypePage(AppointmentTypeService appointmentTypeService)
     {
@@ -32,7 +46,7 @@ public partial class AppointmentTypePage : ContentPage
 
         Items = new ObservableCollection<AppointmentType>(_service.GetItemsAsync().Result);
         AppointmentTypeList.ItemsSource = Items;
-        _lastAppointmentId = Items.Count > 0 ? Items.Max(i => i.Id) : 0;
+        NextAppointmentId = Items.Count > 0 ? Items.Max(i => i.Id) : 0;
     }
 
     private async void OnAddClicked(object sender, EventArgs e)
@@ -43,30 +57,32 @@ public partial class AppointmentTypePage : ContentPage
     private async void OnItemSelected(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.FirstOrDefault() is AppointmentType selected)
+        {
             await Navigation.PushAsync(new AppointmentTypeEditPage(selected, SaveItem));
+        }
     }
 
     private void SaveItem(AppointmentType item, bool isNew, bool isDeleted)
     {
-        if(isDeleted)
+        if (isDeleted)
         {
-            var existing = Items.First(x => x.Id == item.Id);
-            Items.Remove(existing);
-            _service.DeleteItemAsync(item.Id);
+            AppointmentType existing = Items.First(x => x.Id == item.Id);
+            _ = Items.Remove(existing);
+            _ = _service.DeleteItemAsync(item.Id);
             return;
         }
 
         if (isNew)
         {
             Items.Add(item);
-            _service.AddItemAsync(item);        
+            _ = _service.AddItemAsync(item);
         }
         else
         {
-            var existing = Items.First(x => x.Id == item.Id);
-            var index = Items.IndexOf(existing);
+            AppointmentType existing = Items.First(x => x.Id == item.Id);
+            int index = Items.IndexOf(existing);
             Items[index] = item;
-            _service.UpdateItemAsync(item);
+            _ = _service.UpdateItemAsync(item);
         }
 
     }

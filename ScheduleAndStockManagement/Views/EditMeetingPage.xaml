@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="ScheduleAndStockManagement.Views.EditMeetingPage"
+             Title="Meeting Editor">
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+
+        <Label Text="Person" FontAttributes="Bold"/>
+        <Picker x:Name="CustomerPicker"/>
+
+        <Label Text="Appointment type" FontAttributes="Bold"/>
+        <Picker x:Name="AppointmentTypePicker" SelectedIndexChanged="OnPickerSelectedIndexChanged"/>
+
+        <Label Text="Price" FontAttributes="Bold"/>
+        <Entry x:Name="Price"
+               Keyboard="Numeric"/>
+
+        <Label Text="Tips" FontAttributes="Bold"/>
+        <Entry x:Name="TipsValue"
+               Keyboard="Numeric"/>
+
+
+        <Label Text="Notes" FontAttributes="Bold"/>
+        <Entry x:Name="Notes"
+               Keyboard="Plain"/>
+
+
+        <Label Text="From" FontAttributes="Bold"/>
+        <DatePicker x:Name="fromDate"/>
+        <TimePicker x:Name="fromTime" Format="HH:mm"/>
+
+        <Label Text="To" FontAttributes="Bold"/>
+        <DatePicker  x:Name="toDate"/>
+        <TimePicker x:Name="toTime" Format="HH:mm"/>
+
+        <Button Text="Save"
+                Clicked="OnSaveClicked"/>
+
+        <Button Text="Delete"
+                Clicked="OnDeleteClicked"
+                BackgroundColor="Red"
+                TextColor="White" />
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -3,26 +3,26 @@ using ScheduleAndStockManagement.Models;
 
 namespace ScheduleAndStockManagement.Services
 {
-    public class AppointmentTypeService
+    public class MeetingService
     {
-        private readonly IGeneralRepository<AppointmentType> _repo;
+        private readonly IGeneralRepository<Meeting> _repo;
 
-        public AppointmentTypeService(IGeneralRepository<AppointmentType> repo)
+        public MeetingService(IGeneralRepository<Meeting> repo)
         {
             _repo = repo;
         }
 
-        public Task<List<AppointmentType>> GetItemsAsync()
+        public Task<List<Meeting>> GetItemsAsync()
         {
             return _repo.GetAllAsync();
         }
 
-        public Task AddItemAsync(AppointmentType item)
+        public Task AddItemAsync(Meeting item)
         {
             return _repo.AddAsync(item);
         }
 
-        public Task UpdateItemAsync(AppointmentType item)
+        public Task UpdateItemAsync(Meeting item)
         {
             return _repo.UpdateAsync(item);
         }
@@ -32,5 +32,4 @@ namespace ScheduleAndStockManagement.Services
             return _repo.DeleteAsync(id);
         }
     }
-
 }

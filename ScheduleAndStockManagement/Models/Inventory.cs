@@ -1,14 +1,36 @@
-﻿namespace ScheduleAndStockManagement.Models
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace ScheduleAndStockManagement.Models
 {
-    public class Inventory
+    public partial class Inventory : ObservableObject
     {
         public int Id { get; set; }
-        public required string Name { get; set; }
-        public int Quantity { get; set; }
-        public int UnitPrice { get; set; }
-        public int TotalPrice { get; set; }
-        public AppointmentType AppointmentType { get; set; }
-        public string Description { get; set; } = string.Empty;
-        public DateTime AddedAt { get; set; } = DateTime.Now;
+
+        [ObservableProperty]
+        private string name = null!;
+
+        [ObservableProperty]
+        private int quantity = 0;
+
+        [ObservableProperty]
+        private int unitPrice = 0;
+
+        [ObservableProperty]
+        private AppointmentType appointmentType = new AppointmentType();
+
+        [ObservableProperty]
+        private string description = string.Empty;
+
+        [ObservableProperty]
+        private DateTime addedAt = DateTime.Now;
+
+        [ObservableProperty]
+        private bool forSale = false;
+
+
+        public int TotalPrice
+        {
+            get => Quantity * UnitPrice;
+        }
     }
 }

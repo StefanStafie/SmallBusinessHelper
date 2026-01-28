@@ -6,13 +6,11 @@ namespace ScheduleAndStockManagement.Views;
 
 public partial class CustomerPage : ContentPage
 {
-    internal ObservableCollection<Customer> Items { get; set; }
-        = new ObservableCollection<Customer>();
+    public ObservableCollection<Customer> Items { get; set; }
 
     private readonly CustomerService _customerService;
 
-    private static object customerLock = new object();
-    private static int _lastCustomerId = 0;
+    private static readonly object customerLock = new();
 
     public static int NextCustomerId
     {
@@ -20,11 +18,15 @@ public partial class CustomerPage : ContentPage
         {
             lock (customerLock)
             {
-                _lastCustomerId++;
-                return _lastCustomerId;
+                field++;
+                return field;
             }
         }
-    }
+        set
+        {
+            field = value;
+        }
+    } = 0;
 
     public CustomerPage(CustomerService customerService)
     {
@@ -38,7 +40,7 @@ public partial class CustomerPage : ContentPage
 
         CustomerList.ItemsSource = Items;
 
-        _lastCustomerId = Items.Count > 0
+        NextCustomerId = Items.Count > 0
             ? Items.Max(c => c.Id)
             : 0;
     }
@@ -64,23 +66,23 @@ public partial class CustomerPage : ContentPage
     {
         if (isDeleted)
         {
-            var existing = Items.First(x => x.Id == item.Id);
-            Items.Remove(existing);
-            _customerService.DeleteItemAsync(item.Id);
+            Customer existing = Items.First(x => x.Id == item.Id);
+            _ = Items.Remove(existing);
+            _ = _customerService.DeleteItemAsync(item.Id);
             return;
         }
 
         if (isNew)
         {
             Items.Add(item);
-            _customerService.AddItemAsync(item);
+            _ = _customerService.AddItemAsync(item);
         }
         else
         {
-            var existing = Items.First(x => x.Id == item.Id);
-            var index = Items.IndexOf(existing);
+            Customer existing = Items.First(x => x.Id == item.Id);
+            int index = Items.IndexOf(existing);
             Items[index] = item;
-            _customerService.UpdateItemAsync(item);
+            _ = _customerService.UpdateItemAsync(item);
         }
     }
 }

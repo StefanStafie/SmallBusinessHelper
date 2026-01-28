@@ -1,5 +1,5 @@
-﻿using ScheduleAndStockManagement.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ScheduleAndStockManagement.Models;
 
 namespace ScheduleAndStockManagement.Data
 {
@@ -10,7 +10,7 @@ namespace ScheduleAndStockManagement.Data
         public InventoryRepository(AppDbContext context)
         {
             _context = context;
-            _context.Database.EnsureCreated();
+            _ = _context.Database.EnsureCreated();
         }
 
         public async Task<List<Inventory>> GetAllAsync()
@@ -25,22 +25,26 @@ namespace ScheduleAndStockManagement.Data
 
         public async Task AddAsync(Inventory item)
         {
-            _context.InventoryItems.Add(item);
-            await _context.SaveChangesAsync();
+            _ = _context.InventoryItems.Add(item);
+            _ = await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Inventory item)
         {
-            _context.InventoryItems.Update(item);
-            await _context.SaveChangesAsync();
+            _ = _context.InventoryItems.Update(item);
+            _ = await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var item = await _context.InventoryItems.FindAsync(id);
-            if (item is null) return;
-            _context.InventoryItems.Remove(item);
-            await _context.SaveChangesAsync();
+            Inventory? item = await _context.InventoryItems.FindAsync(id);
+            if (item is null)
+            {
+                return;
+            }
+
+            _ = _context.InventoryItems.Remove(item);
+            _ = await _context.SaveChangesAsync();
         }
     }
 }

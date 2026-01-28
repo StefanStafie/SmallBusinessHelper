@@ -2,8 +2,9 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:inputs="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
     x:Class="ScheduleAndStockManagement.Views.AppointmentTypeEditPage"
-    Title="Edit Stock Items">
+    Title="Appointment Types Edit">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="12">
@@ -23,9 +24,11 @@
                    Keyboard="Numeric" />
 
             <Label Text="Background Color" />
-            <Picker x:Name="BackgroundColorPicker"
-                    Title="" />
-
+            <inputs:SfColorPicker x:Name="colorPicker" ShowInputArea="True" IsColorModeSwitcherVisible="True"
+                   ColorMode="Palette" SelectedColor="#0db1e7" PaletteCellShape="Default" PaletteCellCornerRadius="15"
+                   HorizontalOptions="Center"
+                   />
+            
             <Button Text="Save"
                     Clicked="OnSaveClicked" />
 

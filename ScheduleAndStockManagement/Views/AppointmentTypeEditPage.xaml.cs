@@ -4,9 +4,9 @@ namespace ScheduleAndStockManagement.Views;
 
 public partial class AppointmentTypeEditPage : ContentPage
 {
-    private AppointmentType _item;
-    private bool _isNew;
-    private Action<AppointmentType, bool, bool> _saveCallback;
+    private readonly AppointmentType _item;
+    private readonly bool _isNew;
+    private readonly Action<AppointmentType, bool, bool> _saveCallback;
 
     internal AppointmentTypeEditPage(AppointmentType? item, Action<AppointmentType, bool, bool> saveCallback)
     {
@@ -19,9 +19,10 @@ public partial class AppointmentTypeEditPage : ContentPage
         {
             Id = AppointmentTypePage.NextAppointmentId,
             EventName = string.Empty,
-            BackgroundColor = "Red",
+            ColorSchemeHex = 0xFF00FFFF,
             DurationMinutes = 60
-        };
+        }; 
+        
 
         LoadData();
     }
@@ -29,10 +30,9 @@ public partial class AppointmentTypeEditPage : ContentPage
     private void LoadData()
     {
         NameEntry.Text = _item.EventName;
-        Minutes.Text = (_item.DurationMinutes).ToString();
+        Minutes.Text = _item.DurationMinutes.ToString();
         Price.Text = _item.PriceLei.ToString();
-        BackgroundColorPicker.ItemsSource = AppointmentTypePage.PossibleBackgroundColors;
-        BackgroundColorPicker.SelectedItem = _item.BackgroundColor;
+        colorPicker.SelectedColor = Color.FromUint(_item.ColorSchemeHex);
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
@@ -40,18 +40,15 @@ public partial class AppointmentTypeEditPage : ContentPage
         _item.EventName = NameEntry.Text;
         _item.DurationMinutes = (int)float.Parse(Minutes.Text);
         _item.PriceLei = (int)float.Parse(Price.Text);
-        _item.BackgroundColor = (string)BackgroundColorPicker.SelectedItem;
+       _item.ColorSchemeHex = colorPicker.SelectedColor.ToUint();
 
         _saveCallback(_item, _isNew, false);
-        await Navigation.PopAsync();
+        _ = await Navigation.PopAsync();
     }
 
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
-        bool confirm = await DisplayAlert("Delete", "Are you sure?", "Yes", "No");
-        if (!confirm) return;
-
         _saveCallback(_item, true, true);
-        await Navigation.PopAsync();
+        _ = await Navigation.PopAsync();
     }
 }

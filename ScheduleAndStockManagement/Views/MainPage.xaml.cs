@@ -1,7 +1,4 @@
-﻿using ScheduleAndStockManagement.Data;
-using ScheduleAndStockManagement.Services;
-using ScheduleAndStockManagement.ViewModels;
-using ScheduleAndStockManagement.Views;
+﻿using ScheduleAndStockManagement.Views;
 
 namespace ScheduleAndStockManagement
 {
@@ -14,23 +11,24 @@ namespace ScheduleAndStockManagement
 
         private async void OnScheduleClicked(object? sender, EventArgs e)
         {
-            await Navigation.PushAsync(new SchedulingAssistant());
+            SchedulingAssistant? schedulingAssistant = App.Services.GetService<SchedulingAssistant>();
+            await Navigation.PushAsync(schedulingAssistant);
         }
 
         private async void OnStockClicked(object? sender, EventArgs e)
         {
-            var inventoryPage = App.Services.GetService<InventoryPage>();
+            InventoryPage? inventoryPage = App.Services.GetService<InventoryPage>();
             await Navigation.PushAsync(inventoryPage);
         }
         private async void OnAppointmentTypesClicked(object? sender, EventArgs e)
         {
-            var appointmentPage = App.Services.GetService<AppointmentTypePage>();
+            AppointmentTypePage? appointmentPage = App.Services.GetService<AppointmentTypePage>();
             await Navigation.PushAsync(appointmentPage);
         }
 
         private async void OnCustomerClicked(object? sender, EventArgs e)
         {
-            var customerPage = App.Services.GetService<CustomerPage>();
+            CustomerPage? customerPage = App.Services.GetService<CustomerPage>();
             await Navigation.PushAsync(customerPage);
         }
     }
