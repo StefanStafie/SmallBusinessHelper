@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScheduleAndStockManagement.Enums
+﻿namespace ScheduleAndStockManagement.Enums
 {
     public enum ChartType
     {
-        MeetingsPerAppointmentType,
-        EarningsPerAppointmentType,
-
         TipsVsOtherSales,
-        MeetingsPerMonth,
-
-        InventoryPerItem,
+        InventoryCountPerItem,
         EarningsVsSpendingDaily,
         EarningsVsSpendingEvolution,
+        InventoryAvgProfitPerItem,
+        InventoryTotalProfitPerItem,
     }
-
 }
