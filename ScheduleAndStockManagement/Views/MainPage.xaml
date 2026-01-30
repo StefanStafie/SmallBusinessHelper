@@ -51,6 +51,15 @@
                  FontSize="24"
                  CornerRadius="20"
                  HorizontalOptions="Fill" />
+
+            <Button
+                 Text="Graphs and Reports"
+                 x:Name="GraphsAndReportsButton"
+                 Clicked="OnGraphsAndReportsButtonClicked"
+                 HeightRequest="80"
+                 FontSize="24"
+                 CornerRadius="20"
+                 HorizontalOptions="Fill" />
         </VerticalStackLayout>
     </ScrollView>
 

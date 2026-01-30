@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microcharts.Maui;
+using Microsoft.Extensions.Logging;
 using ScheduleAndStockManagement.Data;
 using ScheduleAndStockManagement.Models;
 using ScheduleAndStockManagement.Services;
@@ -22,6 +23,7 @@ namespace ScheduleAndStockManagement
                 });
 
             builder.ConfigureSyncfusionCore();
+            builder.UseMicrocharts();
 
             builder.Services.AddDbContext<AppDbContext>();
 
@@ -42,7 +44,8 @@ namespace ScheduleAndStockManagement
             builder.Services.AddTransient<AppointmentTypePage>();
             builder.Services.AddTransient<CustomerPage>();
             builder.Services.AddTransient<EditMeetingPage>();
-            builder.Services.AddTransient<SchedulingAssistant>();
+            builder.Services.AddTransient<SchedulingAssistantPage>();
+            builder.Services.AddTransient<ChartSelectionPage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

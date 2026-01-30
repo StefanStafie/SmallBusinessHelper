@@ -11,7 +11,7 @@ namespace ScheduleAndStockManagement
 
         private async void OnScheduleClicked(object? sender, EventArgs e)
         {
-            SchedulingAssistant? schedulingAssistant = App.Services.GetService<SchedulingAssistant>();
+            SchedulingAssistantPage? schedulingAssistant = App.Services.GetService<SchedulingAssistantPage>();
             await Navigation.PushAsync(schedulingAssistant);
         }
 
@@ -36,6 +36,12 @@ namespace ScheduleAndStockManagement
         {
             InventoryItemTransactionsPage? transactionsPage = App.Services.GetService<InventoryItemTransactionsPage>();
             await Navigation.PushAsync(transactionsPage);
+        }
+
+        private async void OnGraphsAndReportsButtonClicked(object? sender, EventArgs e)
+        {
+            ChartSelectionPage? chartSelectionPage = App.Services.GetService<ChartSelectionPage>();
+            await Navigation.PushAsync(chartSelectionPage);
         }
     }
 }

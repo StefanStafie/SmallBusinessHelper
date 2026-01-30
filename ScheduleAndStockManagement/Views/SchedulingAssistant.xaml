@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:scheduler="clr-namespace:Syncfusion.Maui.Scheduler;assembly=Syncfusion.Maui.Scheduler"
-    x:Class="ScheduleAndStockManagement.Views.SchedulingAssistant">
+    x:Class="ScheduleAndStockManagement.Views.SchedulingAssistantPage">
     <scheduler:SfScheduler
             x:Name="scheduler"
             View="Week"

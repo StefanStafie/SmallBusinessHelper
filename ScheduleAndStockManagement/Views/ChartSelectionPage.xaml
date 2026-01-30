@@ -1,0 +1,43 @@
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:chart="http://schemas.syncfusion.com/maui"
+    x:Class="ScheduleAndStockManagement.Views.ChartSelectionPage"
+    Title="Reports And Charts">
+
+    <VerticalStackLayout
+        Padding="20"
+        Spacing="16">
+
+        <Picker
+            x:Name="ChartPicker"
+            Title="Select chart"
+            SelectedIndexChanged="ChartPicker_SelectedIndexChanged"
+            />
+
+        <Picker x:Name="AppointmentTypePicker"
+                    Title="Select appointment type"/>
+
+        <HorizontalStackLayout
+            Spacing="10"
+            HorizontalOptions="Center">
+
+            <VerticalStackLayout>
+            <Label Text="Start Date" FontAttributes="Bold"/>
+            <DatePicker x:Name="StartDatePicker"/>
+                
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="End Date" FontAttributes="Bold"/>
+                <DatePicker x:Name="EndDatePicker"/>
+            </VerticalStackLayout>
+            
+        </HorizontalStackLayout>
+
+        <Button
+            Text="Create and Display"
+            HeightRequest="48"
+            Clicked="OnDisplayClicked"/>
+
+    </VerticalStackLayout>
+</ContentPage>

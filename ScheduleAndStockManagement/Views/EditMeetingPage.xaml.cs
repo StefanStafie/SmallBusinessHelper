@@ -9,8 +9,8 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
     private readonly Action<Meeting, bool, bool> saveCallback;
     private readonly bool isNew;
     public  Meeting MeetingItem { get; set; } = new Meeting();
-    public List<Customer> Customers { get; set; } = SchedulingAssistant.Customers;
-    public List<AppointmentType> AppointmentTypes { get; set; } = SchedulingAssistant.AppointmentTypes;
+    public List<Customer> Customers { get; set; } = SchedulingAssistantPage.Customers;
+    public List<AppointmentType> AppointmentTypes { get; set; } = SchedulingAssistantPage.AppointmentTypes;
 
     public EditMeetingPage(DateTime startTime, Action<Meeting, bool, bool> saveCallback)
     {
@@ -44,7 +44,7 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
 
     public void LoadDropdownItems()
     {
-        Customers = SchedulingAssistant.Customers;
+        Customers = SchedulingAssistantPage.Customers;
         this.CustomerPicker.ItemsSource = Customers;
         if(MeetingItem.Customer is not null)
         {
@@ -55,7 +55,7 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
             this.CustomerPicker.SelectedIndex = 0;
         }
 
-        AppointmentTypes = SchedulingAssistant.AppointmentTypes;
+        AppointmentTypes = SchedulingAssistantPage.AppointmentTypes;
         this.AppointmentTypePicker.ItemsSource = AppointmentTypes;
         if(MeetingItem.AppointmentType is not null)
         {

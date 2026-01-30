@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace ScheduleAndStockManagement.Views;
 
-public partial class SchedulingAssistant : ContentPage
+public partial class SchedulingAssistantPage : ContentPage
 {
     private readonly CustomerService _customerService;
     private readonly AppointmentTypeService _appointmentTypeService;
@@ -32,7 +32,7 @@ public partial class SchedulingAssistant : ContentPage
         }
     } = 0;
     
-    public SchedulingAssistant(CustomerService customerService, AppointmentTypeService appointmentTypeService, MeetingService meetingService)
+    public SchedulingAssistantPage(CustomerService customerService, AppointmentTypeService appointmentTypeService, MeetingService meetingService)
     {
         InitializeComponent();
         scheduler.AppointmentDrop += OnSchedulerAppointmentDrop;
