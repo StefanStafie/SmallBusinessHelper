@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using ScheduleAndStockManagement.Enums;
 
 namespace ScheduleAndStockManagement.Models
 {
@@ -12,11 +13,9 @@ namespace ScheduleAndStockManagement.Models
         [ObservableProperty]
         private AppointmentType appointmentType = new AppointmentType();
 
-        [ObservableProperty]
-        private string description = string.Empty;
 
         [ObservableProperty]
-        private bool forSale = false;
+        private InventoryTypeDesignation designation;
         
         public override string ToString()
         {

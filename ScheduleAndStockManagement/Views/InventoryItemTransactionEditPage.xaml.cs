@@ -1,4 +1,6 @@
+using ScheduleAndStockManagement.Enums;
 using ScheduleAndStockManagement.Models;
+using System.Collections.ObjectModel;
 
 namespace ScheduleAndStockManagement.Views;
 
@@ -6,18 +8,49 @@ public partial class InventoryItemTransactionEditPage : ContentPage
 {
     private readonly InventoryItemTransaction inventoryItem;
     private readonly bool isNew;
+
+    public ObservableCollection<InventoryItemType> InventoryItemTypes { get; }
+
     private readonly Action<InventoryItemTransaction, bool, bool> saveCallback;
 
-    internal InventoryItemTransactionEditPage(InventoryItemTransaction? item, Action<InventoryItemTransaction, bool, bool> saveCallback)
+    private InventoryTypeDesignation selectedInventoryType;
+    public InventoryTypeDesignation SelectedInventoryType
+    {
+        get => selectedInventoryType;
+        set
+        {
+            selectedInventoryType = value;
+            OnPropertyChanged();
+            InventoryItemTypePicker.ItemsSource = InventoryItemTypes.Where(item => item.Designation == selectedInventoryType).ToList();
+            if(value != InventoryTypeDesignation.ForSaleProducts)
+            {
+                this.WasBoughtCheckBox.IsChecked = true;
+                this.WasSoldCheckBox.IsChecked = false;
+                this.WasBoughtCheckBox.IsEnabled = false;
+                this.WasSoldCheckBox.IsEnabled = false;
+            }
+            else
+            {
+                this.WasBoughtCheckBox.IsEnabled = true;
+                this.WasSoldCheckBox.IsEnabled = true;
+            }
+        }
+    }
+
+    internal InventoryItemTransactionEditPage(
+        InventoryItemTransaction? item,
+        Action<InventoryItemTransaction, bool, bool> saveCallback,
+        System.Collections.ObjectModel.ObservableCollection<InventoryItemType> InventoryItemTypes)
     {
         InitializeComponent();
 
         this.saveCallback = saveCallback;
         this.isNew = item is null;
-
+        this.InventoryItemTypes = InventoryItemTypes;
         inventoryItem = item ?? new InventoryItemTransaction
         {
-            InventoryItemType = InventoryItemTransactionsPage.InventoryItemsForSale.FirstOrDefault(),
+            InventoryItemType = this.InventoryItemTypes.FirstOrDefault(),
+            Description = string.Empty,
             Quantity = 1,
             UnitPrice = 0,
             AddedAt = DateTime.Now,
@@ -25,30 +58,24 @@ public partial class InventoryItemTransactionEditPage : ContentPage
         };
 
         LoadData();
+
+        this.BindingContext = this;
     }
 
     private void LoadData()
     {
         QtyEntry.Text = inventoryItem.Quantity.ToString();
         UnitPriceEntry.Text = inventoryItem.UnitPrice.ToString();
-        DescriptionEntry.Text = inventoryItem.InventoryItemType?.Description;
+        DescriptionEntry.Text = inventoryItem.Description;
         WasSoldCheckBox.IsChecked = inventoryItem.WasSold;
         WasBoughtCheckBox.IsChecked = !inventoryItem.WasSold;
         AddedAtDatePicker.Date = inventoryItem.AddedAt.Date;
         AddedAtTimePicker.Time = inventoryItem.AddedAt.TimeOfDay;
-
-        InventoryItemTypePicker.ItemsSource = InventoryItemTransactionsPage.InventoryItemsForSale;
-        if (isNew)
-        {
-            InventoryItemTypePicker.SelectedItem = InventoryItemTransactionsPage.InventoryItemsForSale.FirstOrDefault();
-        }
-        else
-        {
-            var index = InventoryItemTransactionsPage.InventoryItemsForSale.FindIndex(x => x.Id == inventoryItem.InventoryItemType.Id);
-            InventoryItemTypePicker.SelectedIndex = index;
-        }
-
+        SelectedInventoryType = inventoryItem.InventoryItemType.Designation;
+        InventoryItemTypePicker.ItemsSource = InventoryItemTypes.Where(item => item.Designation == SelectedInventoryType).ToList();
+        
         AppointmentTypePicker.ItemsSource = InventoryItemTransactionsPage.PossibleAppointmentTypes;
+        InventoryItemTypePicker.SelectedItem = inventoryItem.InventoryItemType;
         AppointmentTypePicker.SelectedItem = inventoryItem.InventoryItemType?.AppointmentType;
     }
 
@@ -60,7 +87,6 @@ public partial class InventoryItemTransactionEditPage : ContentPage
         if (selectedItem is not null)
         {
             this.AppointmentTypePicker.SelectedItem = selectedItem.AppointmentType;
-            this.DescriptionEntry.Text = selectedItem.Description;
         }
     }
 
@@ -77,6 +103,7 @@ public partial class InventoryItemTransactionEditPage : ContentPage
         inventoryItem.UnitPrice = int.Parse(UnitPriceEntry.Text);
         inventoryItem.AddedAt = AddedAtDatePicker.Date.Value.AddTicks(AddedAtTimePicker.Time.Value.Ticks);
         inventoryItem.WasSold = WasSoldCheckBox.IsChecked;
+        inventoryItem.Description = DescriptionEntry.Text;
 
         saveCallback(inventoryItem, isNew, false);
         _ = await Navigation.PopAsync();

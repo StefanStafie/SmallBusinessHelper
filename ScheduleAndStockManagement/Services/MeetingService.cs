@@ -31,5 +31,10 @@ namespace ScheduleAndStockManagement.Services
         {
             return _repo.DeleteAsync(id);
         }
+
+        public List<Meeting> GetItemsForCustomer(int customerId)
+        {
+            return _repo.GetAllAsync().Result.Where(x=>x.Customer.Id == customerId).ToList();
+        }
     }
 }

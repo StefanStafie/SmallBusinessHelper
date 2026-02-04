@@ -1,3 +1,4 @@
+using ScheduleAndStockManagement.Enums;
 using ScheduleAndStockManagement.Models;
 using ScheduleAndStockManagement.Services;
 using System.Collections;
@@ -14,8 +15,18 @@ public partial class InventoryItemTransactionsPage : ContentPage
     private readonly InventoryItemTransactionService inventoryItemTransactionService;
     private readonly AppointmentTypeService appointmentTypeService;
     public static List<AppointmentType> PossibleAppointmentTypes { get; private set; }
-
-    public static List<InventoryItemType> InventoryItemsForSale { get; private set; }
+    
+    private InventoryTypeDesignation selectedInventoryType;
+    public InventoryTypeDesignation SelectedInventoryType
+    {
+        get => selectedInventoryType;
+        set 
+        { 
+            selectedInventoryType = value; 
+            OnPropertyChanged();
+            InventoryList.ItemsSource = InventoryItemTransactions.Where(item => item.InventoryItemType.Designation == selectedInventoryType).ToList();
+        }
+    }
 
     public InventoryItemTransactionsPage(InventoryItemTypeService inventoryItemTypeService, InventoryItemTransactionService inventoryItemTransactionService, AppointmentTypeService appointmentTypeService)
     {
@@ -32,22 +43,22 @@ public partial class InventoryItemTransactionsPage : ContentPage
             inventoryItemTransactionService.GetItemsAsync().Result
         );
 
-        BindingContext = this;
         InventoryList.ItemsSource = InventoryItemTransactions;
+
+        SelectedInventoryType = InventoryTypeDesignation.ForSaleProducts;
+        BindingContext = this;
     }
 
     private async void OnAddItemTransactionClicked(object sender, EventArgs e)
     {
-        InventoryItemsForSale = InventoryItemTypes.Where(itemType => itemType.ForSale).ToList();
-        await Navigation.PushAsync(new InventoryItemTransactionEditPage(null, SaveItemTransaction));
+        await Navigation.PushAsync(new InventoryItemTransactionEditPage(null, SaveItemTransaction, InventoryItemTypes));
     }
 
-    private async void OnItemSelected(object sender, SelectionChangedEventArgs e)
+    private async void OnItemClicked(object sender, EventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is InventoryItemTransaction selected)
+        if (sender is Grid grid && grid.BindingContext is InventoryItemTransaction selected)
         {
-            InventoryItemsForSale = InventoryItemTypes.Where(itemType => itemType.ForSale).ToList();
-            await Navigation.PushAsync(new InventoryItemTransactionEditPage(selected, SaveItemTransaction));
+            await Navigation.PushAsync(new InventoryItemTransactionEditPage(selected, SaveItemTransaction, InventoryItemTypes));
         }
     }
 
@@ -74,4 +85,35 @@ public partial class InventoryItemTransactionsPage : ContentPage
             _ = inventoryItemTransactionService.UpdateItemAsync(inventoryItemTransaction);
         }
     }
+    private void OnFilterChanged(object sender, TextChangedEventArgs e)
+    {
+        string wasSoldFilter = FilterWasSold.Text?.ToLower() ?? "";
+        string nameFilter = FilterName.Text?.ToLower() ?? "";
+        string quantityFilter = FilterQuantity.Text?.ToLower() ?? "";
+        string unitPriceFilter = FilterUnitPrice.Text?.ToLower() ?? "";
+        string dateFilter = FilterDate.Text?.ToLower() ?? "";
+
+        var filtered = InventoryItemTransactions.Where(item =>
+
+            (string.IsNullOrWhiteSpace(wasSoldFilter) ||
+                (wasSoldFilter.Contains("sold") && item.WasSold) ||
+                (wasSoldFilter.Contains("not") && !item.WasSold)) &&
+
+            (string.IsNullOrWhiteSpace(nameFilter) ||
+                (item.InventoryItemType?.ToString()?.ToLower().Contains(nameFilter) ?? false)) &&
+
+            (string.IsNullOrWhiteSpace(quantityFilter) ||
+                item.Quantity.ToString().ToLower().Contains(quantityFilter)) &&
+
+            (string.IsNullOrWhiteSpace(unitPriceFilter) ||
+                item.UnitPrice.ToString().ToLower().Contains(unitPriceFilter)) &&
+
+            (string.IsNullOrWhiteSpace(dateFilter) ||
+                item.AddedAt.ToString("yyyy-MM-dd").Contains(dateFilter))
+        ).ToList();
+
+        InventoryList.ItemsSource = filtered;
+    }
+
+
 }

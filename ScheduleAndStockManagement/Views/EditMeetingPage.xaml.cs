@@ -9,8 +9,10 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
     private readonly Action<Meeting, bool, bool> saveCallback;
     private readonly bool isNew;
     public  Meeting MeetingItem { get; set; } = new Meeting();
-    public List<Customer> Customers { get; set; } = SchedulingAssistantPage.Customers;
-    public List<AppointmentType> AppointmentTypes { get; set; } = SchedulingAssistantPage.AppointmentTypes;
+    public List<Customer> Customers { get; set; }
+    public List<AppointmentType> AppointmentTypes { get; set; }
+    public Customer SelectedCustomer { get; set; }
+    public AppointmentType SelectedAppointmentType { get; set; }
 
     public EditMeetingPage(DateTime startTime, Action<Meeting, bool, bool> saveCallback)
     {
@@ -21,6 +23,7 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
         this.LoadEndDateTime(startTime.AddHours(1));
         this.LoadDropdownItems();
         this.LoadEntryValues();
+        this.BindingContext = this;
     }
 
     private void LoadEntryValues()
@@ -40,31 +43,15 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
         this.LoadEndDateTime(meeting.To);
         this.LoadDropdownItems();
         this.LoadEntryValues();
+        this.BindingContext = this;
     }
 
     public void LoadDropdownItems()
     {
         Customers = SchedulingAssistantPage.Customers;
-        this.CustomerPicker.ItemsSource = Customers;
-        if(MeetingItem.Customer is not null)
-        {
-            this.CustomerPicker.SelectedItem = MeetingItem.Customer;
-        }
-        else
-        {
-            this.CustomerPicker.SelectedIndex = 0;
-        }
-
         AppointmentTypes = SchedulingAssistantPage.AppointmentTypes;
-        this.AppointmentTypePicker.ItemsSource = AppointmentTypes;
-        if(MeetingItem.AppointmentType is not null)
-        {
-            this.AppointmentTypePicker.SelectedItem = MeetingItem.AppointmentType;
-        }
-        else
-        {
-            this.AppointmentTypePicker.SelectedIndex = 0;
-        }
+        SelectedCustomer = MeetingItem.Customer;
+        SelectedAppointmentType = MeetingItem.AppointmentType;
     }
 
     public void LoadStartDateTime(DateTime start)
@@ -94,12 +81,6 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
 
     private async void OnSaveClicked(object sender, EventArgs e)
     {
-        if(this.CustomerPicker.SelectedItem == null || this.AppointmentTypePicker.SelectedItem == null)
-        {
-            await DisplayAlertAsync("Error", "Please select both a customer and an appointment type.", "OK");
-            return;
-        }
-
         if (string.IsNullOrEmpty(this.Price.Text))
         {
             this.Price.Text = "0"; 
@@ -110,14 +91,25 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
             this.TipsValue.Text = "0";
         }
 
+        if (!this.AppointmentTypes.Contains(SelectedAppointmentType))
+        {
+            await DisplayAlertAsync("Invalid Appointment Type", "Please select a valid appointment type!", "OK");
+            return;
+        }
+
+        if (!this.Customers.Contains(SelectedCustomer))
+        {
+            await DisplayAlertAsync("Invalid Customer", "Please select a valid Customer!", "OK");
+            return;
+        }
+
         MeetingItem.From = this.fromDate.Date.Value.Add(this.fromTime.Time.Value);
         MeetingItem.To = this.toDate.Date.Value.Add(this.toTime.Time.Value);
-        MeetingItem.AppointmentType = (AppointmentType)this.AppointmentTypePicker.SelectedItem;
-        MeetingItem.Customer = (Customer)this.CustomerPicker.SelectedItem;
+        MeetingItem.AppointmentType = SelectedAppointmentType;
+        MeetingItem.Customer = SelectedCustomer;
         MeetingItem.PriceLei = int.Parse(this.Price.Text);
         MeetingItem.TipAmount = int.Parse(this.TipsValue.Text);
         MeetingItem.Notes = this.Notes.Text;
-
 
         saveCallback(MeetingItem, isNew, false);
         _ = await Navigation.PopAsync();
@@ -127,5 +119,17 @@ public partial class EditMeetingPage : ContentPage, INotifyPropertyChanged
     {
         saveCallback(MeetingItem, true, true);
         _ = await Navigation.PopAsync();
+    }
+
+    private async void OnDetailsClicked(object sender, EventArgs e)
+    {
+        if(SelectedCustomer is null)
+        {
+            await DisplayAlertAsync("No Customer Selected", "Please select a valid Customer to view details!", "OK");
+            return;
+        }
+
+        var detailsPage = new CustomerDetailsPage(SelectedCustomer);
+        await Navigation.PushAsync(detailsPage);
     }
 }

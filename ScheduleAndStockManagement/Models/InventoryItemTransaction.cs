@@ -11,6 +11,9 @@ namespace ScheduleAndStockManagement.Models
         private InventoryItemType  inventoryItemType = null;
 
         [ObservableProperty]
+        private string description = string.Empty;
+
+        [ObservableProperty]
         private int quantity = 0;
 
         [ObservableProperty]
@@ -18,7 +21,7 @@ namespace ScheduleAndStockManagement.Models
 
         [ObservableProperty]
         private DateTime addedAt = DateTime.Now;
-        
+
         [ObservableProperty]
         private bool wasSold = false;
         
@@ -60,5 +63,26 @@ namespace ScheduleAndStockManagement.Models
         {
             return AddedAt;
         }
+
+        public string WasSoldText
+        {
+            get => WasSold ? "Sold" : "Bought";
+        }
+
+        public string WasSoldColor
+        {
+            get => WasSold ? "#3A2F25" : "#A98C63";
+        }
+
+        public string NameAndDescription
+        {
+            get
+            {
+                string itemName = InventoryItemType?.Name ?? "Unknown Item";
+                return string.IsNullOrWhiteSpace(Description) ? itemName : $"{itemName} - {Description}";
+            }
+
+        }
+
     }
 }

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="ScheduleAndStockManagement.Views.CustomerDetailsPage"
+    Title="Edit Customer">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label Text="Name" FontAttributes="Bold"/>
+            <Entry x:Name="NameEntry"
+                   Placeholder="Enter customer name"
+                   InputTransparent="True"/>
+
+            <Label Text="Phone" FontAttributes="Bold"/>
+            <Entry x:Name="PhoneEntry"
+                   Placeholder="Enter phone number"
+                   Keyboard="Telephone"
+                   InputTransparent="True"/>
+
+            <CollectionView x:Name="FilesList"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding Items}">
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="0"
+                                BackgroundColor="#2A2A2A"
+                                Padding="0">
+                            <StackLayout Spacing="0">
+
+                                <Grid ColumnSpacing="10" Padding="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="10*" />
+                                        <ColumnDefinition Width="2*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="{Binding FileName}"
+                                           FontAttributes="Bold"
+                                           Grid.Column="0"/>
+
+                                    <Button Text="View"
+                                            Clicked="OnViewFileClicked"
+                                            BackgroundColor="DarkBlue"
+                                            TextColor="White"
+                                            Grid.Column="1"
+                                            CommandParameter="{Binding .}"/>
+                                </Grid>
+
+                                <BoxView HeightRequest="1"
+                             BackgroundColor="White"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
+            <Grid ColumnSpacing="10" Padding="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Date Time" FontAttributes="Bold" Grid.Column="0"/>
+                <Label Text="Appointment" FontAttributes="Bold" Grid.Column="1"/>
+                <Label Text="Service Price" FontAttributes="Bold" Grid.Column="2"/>
+                <Label Text="Tip" FontAttributes="Bold" Grid.Column="3"/>
+                <Label Text="Notes" FontAttributes="Bold" Grid.Column="4"/>
+            </Grid>
+            
+            <CollectionView x:Name="OtherMeetingsList"
+                 SelectionMode="Single"
+                 ItemsSource="{Binding OtherMeetings}">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeThickness="0"
+                     BackgroundColor="#2A2A2A"
+                     Padding="0">
+                            <StackLayout Spacing="0">
+
+                                <Grid ColumnSpacing="10" Padding="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="10*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Text="{Binding From}"
+                                        Grid.Column="0"/>
+                                    <Label Text="{Binding AppointmentType.EventName}"
+                                        Grid.Column="1"/>
+                                    <Label Text="{Binding PriceLei}"
+                                        Grid.Column="2"/>   
+                                    <Label Text="{Binding TipAmount}"
+                                        Grid.Column="3"/>
+                                    <Label Text="{Binding Notes}"
+                                        Grid.Column="4"/>
+                                </Grid>
+
+                                <BoxView HeightRequest="1"
+                                         BackgroundColor="White"/>
+                            </StackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Text="Added At" FontAttributes="Bold"/>
+
+            <HorizontalStackLayout Spacing="10">
+                <DatePicker x:Name="AddedAtDatePicker"
+                            InputTransparent="True"/>
+                <TimePicker x:Name="AddedAtTimePicker"
+                            InputTransparent="True"/>
+            </HorizontalStackLayout>
+
+            <Button Text="Back"
+                    Clicked="OnBackClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

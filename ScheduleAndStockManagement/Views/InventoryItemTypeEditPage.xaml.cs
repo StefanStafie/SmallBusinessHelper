@@ -1,54 +1,75 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using ScheduleAndStockManagement.Enums;
 using ScheduleAndStockManagement.Models;
 
 namespace ScheduleAndStockManagement.Views;
 
-public partial class InventoryItemTypeEditPage : ContentPage
+public partial class InventoryItemTypeEditPage : ContentPage, INotifyPropertyChanged
 {
-    private readonly InventoryItemType inventoryItemType;
     private readonly bool isNew;
     private readonly Action<InventoryItemType, bool, bool> saveCallback;
+
+    private string name;
+    public string Name
+    {
+        get => name;
+        set { name = value; OnPropertyChanged(); }
+    }
+
+    private AppointmentType selectedAppointmentType;
+    public AppointmentType SelectedAppointmentType
+    {
+        get => selectedAppointmentType;
+        set { selectedAppointmentType = value; OnPropertyChanged(); }
+    }
+
+    private InventoryTypeDesignation selectedInventoryType;
+    public InventoryTypeDesignation SelectedInventoryType
+    {
+        get => selectedInventoryType;
+        set { selectedInventoryType = value; OnPropertyChanged(); }
+    }
+
+    public InventoryItemType InventoryItemType { get; private set; }
+
+    public IList<AppointmentType> PossibleAppointmentTypes => InventoryItemTypesPage.PossibleAppointmentTypes;
 
     internal InventoryItemTypeEditPage(InventoryItemType? item, Action<InventoryItemType, bool, bool> saveCallback)
     {
         InitializeComponent();
-
         this.saveCallback = saveCallback;
         isNew = item == null;
 
-        inventoryItemType = item ?? new InventoryItemType
+        InventoryItemType = item ?? new InventoryItemType
         {
             Name = string.Empty,
             AppointmentType = InventoryItemTypesPage.PossibleAppointmentTypes.First(),
-            Description = string.Empty,
-            ForSale = false,
+            Designation = InventoryTypeDesignation.Consumable,
         };
 
-        LoadData();
-    }
+        // Initialize properties for binding
+        Name = InventoryItemType.Name;
+        SelectedAppointmentType = InventoryItemType.AppointmentType;
+        SelectedInventoryType = InventoryItemType.Designation;
 
-    private void LoadData()
-    {
-        NameEntry.Text = inventoryItemType.Name;
-        DescriptionEntry.Text = inventoryItemType.Description;
-        ForSaleCheckbox.IsChecked = inventoryItemType.ForSale;
-        AppointmentTypePicker.ItemsSource = InventoryItemTypesPage.PossibleAppointmentTypes;
-        AppointmentTypePicker.SelectedItem = inventoryItemType.AppointmentType;
+        BindingContext = this;
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
     {
-        inventoryItemType.Name = NameEntry.Text;
-        inventoryItemType.Description = DescriptionEntry.Text;
-        inventoryItemType.AppointmentType = (AppointmentType)AppointmentTypePicker.SelectedItem;
-        inventoryItemType.ForSale = ForSaleCheckbox.IsChecked;
+        // Update the model from bound properties
+        InventoryItemType.Name = Name;
+        InventoryItemType.AppointmentType = SelectedAppointmentType;
+        InventoryItemType.Designation = SelectedInventoryType;
 
-        this.saveCallback(inventoryItemType, isNew, false);
+        saveCallback(InventoryItemType, isNew, false);
         _ = await Navigation.PopAsync();
     }
 
     private async void OnDeleteClicked(object sender, EventArgs e)
     {
-        saveCallback(inventoryItemType, true, true);
+        saveCallback(InventoryItemType, true, true);
         _ = await Navigation.PopAsync();
     }
 }

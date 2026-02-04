@@ -1,3 +1,4 @@
+using ScheduleAndStockManagement.Enums;
 using ScheduleAndStockManagement.Models;
 using ScheduleAndStockManagement.Services;
 using System.Collections;
@@ -17,6 +18,17 @@ public partial class InventoryItemTypesPage : ContentPage
 
     public static List<InventoryItemType> InventoryItemsForSale { get; private set; }
 
+    private InventoryTypeDesignation selectedInventoryType;
+    public InventoryTypeDesignation SelectedInventoryType
+    {
+        get => selectedInventoryType;
+        set
+        {
+            selectedInventoryType = value;
+            OnPropertyChanged();
+            InventoryList.ItemsSource = InventoryItemTypes.Where(item => item.Designation == selectedInventoryType).ToList();
+        }
+    }
     public InventoryItemTypesPage(InventoryItemTypeService inventoryItemTypeService, InventoryItemTransactionService inventoryItemTransactionService, AppointmentTypeService appointmentTypeService)
     {
         InitializeComponent();
@@ -34,6 +46,7 @@ public partial class InventoryItemTypesPage : ContentPage
 
         BindingContext = this;
         InventoryList.ItemsSource = InventoryItemTypes;
+        SelectedInventoryType = InventoryTypeDesignation.ForSaleProducts;
     }
 
 
@@ -72,5 +85,22 @@ public partial class InventoryItemTypesPage : ContentPage
             InventoryItemTypes[index] = inventoryItemType;
             _ = inventoryItemTypeService.UpdateItemAsync(inventoryItemType);
         }
+    }
+
+    private void OnFilterChanged(object sender, TextChangedEventArgs e)
+    {
+        string idFilter = FilterId.Text?.ToLower() ?? "";
+        string designationFilter = FilterDesignation.Text?.ToLower() ?? "";
+        string nameFilter = FilterName.Text?.ToLower() ?? "";
+        string appointmentFilter = FilterAppointmentType.Text?.ToLower() ?? "";
+
+        var filtered = this.InventoryItemTypes.Where(item =>
+            item.Id.ToString().ToLower().Contains(idFilter) &&
+            (item.Designation.ToString().ToLower().Contains(designationFilter) == true) &&
+            (item.Name?.ToLower().Contains(nameFilter) ?? true) &&
+            (item.AppointmentType?.EventName?.ToLower().Contains(appointmentFilter) ?? true)
+        ).ToList();
+
+        InventoryList.ItemsSource = filtered;
     }
 }

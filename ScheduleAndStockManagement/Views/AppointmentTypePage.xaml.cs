@@ -68,4 +68,21 @@ public partial class AppointmentTypePage : ContentPage
         }
 
     }
+
+    private void OnFilterChanged(object sender, TextChangedEventArgs e)
+    {
+        string nameFilter = FilterName.Text?.ToLower() ?? "";
+        string minutesFilter = FilterMinutes.Text?.ToLower() ?? "";
+        string priceFilter = FilterPrice.Text?.ToLower() ?? "";
+        string colorFilter = FilterColor.Text?.ToLower() ?? "";
+
+        var filtered = Items.Where(item =>
+            (string.IsNullOrWhiteSpace(nameFilter) || item.EventName.ToLower().Contains(nameFilter)) &&
+            (string.IsNullOrWhiteSpace(minutesFilter) || item.DurationMinutes.ToString().Contains(minutesFilter)) &&
+            (string.IsNullOrWhiteSpace(priceFilter) || item.PriceLei.ToString().Contains(priceFilter))
+        ).ToList();
+
+        AppointmentTypeList.ItemsSource = filtered;
+    }
+
 }

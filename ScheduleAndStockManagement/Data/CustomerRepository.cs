@@ -15,7 +15,16 @@ namespace ScheduleAndStockManagement.Data
 
         public async Task<List<Customer>> GetAllAsync()
         {
-            return await _context.Customers.ToListAsync();
+            var customers = await _context.Customers.ToListAsync();
+
+            foreach (var customer in customers)
+            {
+                customer.CustomerFiles = await _context.CustomerFiles
+                    .Where(f => f.CustomerId == customer.Id)
+                    .ToListAsync();
+            }
+
+            return customers;
         }
 
         public async Task<Customer> GetByIdAsync(int id)

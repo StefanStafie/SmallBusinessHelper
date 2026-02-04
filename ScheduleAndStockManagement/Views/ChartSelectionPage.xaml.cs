@@ -39,9 +39,8 @@ public partial class ChartSelectionPage : ContentPage
         this.appointmentTypeService = appointmentTypeService;
         this.inventoryItemTransactionService = inventoryItemTransactionService;
 
-
-        meetings = this.meetingService.GetItemsAsync().Result;
         customers = this.customerService.GetItemsAsync().Result;
+        meetings = this.meetingService.GetItemsAsync().Result;
         inventoryItemTypes = this.inventoryService.GetItemsAsync().Result;
         inventoryItemTransactions = this.inventoryItemTransactionService.GetItemsAsync().Result;
         appointmentTypes = this.appointmentTypeService.GetItemsAsync().Result;
@@ -59,13 +58,12 @@ public partial class ChartSelectionPage : ContentPage
                 { ChartType.InventoryCountPerItem, DisplayInventoryCountPerItem },
                 { ChartType.EarningsVsSpendingDaily, DisplayEarningVsSpendingDaily },
                 { ChartType.EarningsVsSpendingEvolution, DisplayEarningVsSpendingEvolution },
-
             };
 
         ChartPicker.ItemsSource = chartActions.Keys.ToList();
         ChartPicker.SelectedIndex = 0;
 
-        StartDatePicker.Date = DateTime.Today.AddYears(-1);
+        StartDatePicker.Date = new DateTime(2025, 8, 23);
         EndDatePicker.Date = DateTime.Today;
     }
 
@@ -75,7 +73,7 @@ public partial class ChartSelectionPage : ContentPage
 
         foreach (var itemType in inventoryItemTypes)
         {
-            if (itemType.ForSale == false)
+            if (itemType.Designation != InventoryTypeDesignation.ForSaleProducts)
             {
                 continue;
             }
@@ -131,7 +129,7 @@ public partial class ChartSelectionPage : ContentPage
 
         foreach (var itemType in inventoryItemTypes)
         {
-            if (itemType.ForSale == false)
+            if (itemType.Designation != InventoryTypeDesignation.ForSaleProducts)
             {
                 continue;
             }
@@ -182,96 +180,88 @@ public partial class ChartSelectionPage : ContentPage
     private void DisplayTipsVsSales()
     {
         var selectedAppointmentType = (AppointmentType)this.AppointmentTypePicker.SelectedItem;
-        
-        Dictionary<DateTime, int> meetingsPriceEarnings = meetings
-        .Where(m => this.AppointmentTypePicker.SelectedIndex == 0 || m.AppointmentType == selectedAppointmentType)
-        .GroupBy(m => m.EarningDateTime())
-        .ToDictionary(
-            g => g.Key,
-            g => g.Sum(m => m.PriceLei)
-        );
+        bool allTypes = this.AppointmentTypePicker.SelectedIndex == 0;
 
-        Dictionary<DateTime, int> meetingsTipsEarnings = meetings
-        .Where(m => this.AppointmentTypePicker.SelectedIndex == 0 || m.AppointmentType == selectedAppointmentType)
-        .GroupBy(m => m.EarningDateTime())
-        .ToDictionary(
-            g => g.Key,
-            g => g.Sum(m => m.TipAmount)
-        );
+        DateTime startDate = this.StartDatePicker.Date!.Value.Date;
+        DateTime endDate = this.EndDatePicker.Date!.Value.Date;
 
-        Dictionary<DateTime, int> inventoryEarnings = inventoryItemTransactions
-            .Where(m => this.AppointmentTypePicker.SelectedIndex == 0 || m.InventoryItemType.AppointmentType == selectedAppointmentType)
-            .GroupBy(m => m.EarningDateTime())
-            .ToDictionary(
-                g => g.Key,
-                g => g.Sum(m => m.CalculateEarnings())
-            );
+        Dictionary<DateTime, int> meetingsPriceEarnings = new();
+        Dictionary<DateTime, int> meetingsTipsEarnings = new();
+        Dictionary<DateTime, int> inventoryEarnings = new();
+        Dictionary<DateTime, int> inventorySpendings = new();
 
-        Dictionary<DateTime, int> inventorySpendings = inventoryItemTransactions
-            .Where(m => this.AppointmentTypePicker.SelectedIndex == 0 || m.InventoryItemType.AppointmentType == selectedAppointmentType)
-            .GroupBy(m => m.SpendingDateTime())
-            .ToDictionary(
-                g => g.Key,
-                g => g.Sum(m => m.CalculateSpendings())
-            );
+        int priceSum = 0;
+        int tipsSum = 0;
+        int invEarnSum = 0;
+        int invSpendSum = 0;
 
-
-        if (this.StartDatePicker.Date.HasValue && this.EndDatePicker.Date.HasValue)
+        for (DateTime day = startDate; day <= endDate; day = day.AddDays(1))
         {
-            inventorySpendings = this.FilterByDate(this.StartDatePicker.Date.Value, this.EndDatePicker.Date.Value, inventorySpendings);
-            inventoryEarnings = this.FilterByDate(this.StartDatePicker.Date.Value, this.EndDatePicker.Date.Value, inventoryEarnings);
-            meetingsTipsEarnings = this.FilterByDate(this.StartDatePicker.Date.Value, this.EndDatePicker.Date.Value, meetingsTipsEarnings);
-            meetingsPriceEarnings = this.FilterByDate(this.StartDatePicker.Date.Value, this.EndDatePicker.Date.Value, meetingsPriceEarnings);
+            foreach (var m in meetings)
+            {
+                if (!allTypes && m.AppointmentType != selectedAppointmentType)
+                    continue;
+
+                if (m.EarningDateTime().Date == day)
+                {
+                    priceSum += m.PriceLei;
+                    tipsSum += m.TipAmount;
+                }
+            }
+
+            foreach (var it in inventoryItemTransactions)
+            {
+                if (!allTypes && it.InventoryItemType.AppointmentType != selectedAppointmentType)
+                    continue;
+
+                if (it.EarningDateTime().Date == day)
+                    invEarnSum += it.CalculateEarnings();
+
+                if (it.SpendingDateTime().Date == day)
+                    invSpendSum += it.CalculateSpendings();
+            }
+
+            meetingsPriceEarnings[day] = priceSum;
+            meetingsTipsEarnings[day] = tipsSum;
+            inventoryEarnings[day] = invEarnSum;
+            inventorySpendings[day] = invSpendSum;
         }
 
-        int sum = 0;
-        inventorySpendings = inventorySpendings
-            .OrderBy(x => x.Key)
-            .ToDictionary(
-                x => x.Key,
-                x => sum += x.Value
-            );
-
-        sum = 0;
-        inventoryEarnings = inventoryEarnings
-            .OrderBy(x => x.Key)
-            .ToDictionary(
-                x => x.Key,
-                x => sum += x.Value
-            );
-
-        sum = 0;
-        meetingsTipsEarnings = meetingsTipsEarnings
-            .OrderBy(x => x.Key)
-            .ToDictionary(
-                x => x.Key,
-                x => sum += x.Value
-            );
-
-        sum = 0;
-        meetingsPriceEarnings = meetingsPriceEarnings
-            .OrderBy(x => x.Key)
-            .ToDictionary(
-                x => x.Key,
-                x => sum += x.Value
-            );
 
         var chart = this.CreateBaseBaseBarChart();
 
-        AddSeriesToChart(chart, inventorySpendings, Colors.Blue, "spent");
+        AddSeriesToChart(chart, inventorySpendings, Colors.Red, "spent");
         AddSeriesToChart(chart, inventoryEarnings, Colors.Green, "sold");
-        AddSeriesToChart(chart, meetingsTipsEarnings, Colors.Violet, "tips");
-        AddSeriesToChart(chart, meetingsPriceEarnings, Colors.Red, "tariff");
+        AddSeriesToChart(chart, meetingsTipsEarnings, Colors.DeepSkyBlue, "tips");
+        AddSeriesToChart(chart, meetingsPriceEarnings, Colors.AliceBlue, "tariff");
 
         Navigation.PushAsync(new ChartDisplayPage(chart));
     }
+    public static void FillMissingDates(Dictionary<DateTime, int> inventorySpendings)
+    {
+        if (inventorySpendings == null || inventorySpendings.Count == 0)
+            return;
+
+        var startDate = inventorySpendings.Keys.Min().Date;
+        var endDate = inventorySpendings.Keys.Max().Date;
+
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            if (!inventorySpendings.ContainsKey(date))
+            {
+                inventorySpendings[date] = 0;
+            }
+        }
+    }
+
+
     private void DisplayInventoryCountPerItem()
     {
         var inventoryChartData = new List<InventoryItemChartModel>();
 
         foreach (var itemType in inventoryItemTypes)
         {
-            if(itemType.ForSale == false)
+            if (itemType.Designation != InventoryTypeDesignation.ForSaleProducts)
             {
                 continue;
             }
@@ -322,48 +312,45 @@ public partial class ChartSelectionPage : ContentPage
 
     public void DisplayEarningVsSpendingDaily()
     {
-
         var selectedAppointmentType = (AppointmentType)this.AppointmentTypePicker.SelectedItem;
-        Dictionary<DateTime, int> meetingsEarnings = meetings
-        .Where(m=> this.AppointmentTypePicker.SelectedIndex == 0 || m.AppointmentType == selectedAppointmentType)
-        .GroupBy(m => m.EarningDateTime())
-        .ToDictionary(
-            g => g.Key,
-            g => g.Sum(m => m.CalculateEarnings())
-        );
+        bool allTypes = this.AppointmentTypePicker.SelectedIndex == 0;
 
-        Dictionary<DateTime, int> inventoryEarnings = inventoryItemTransactions
-            .Where(m => this.AppointmentTypePicker.SelectedIndex == 0 || m.InventoryItemType.AppointmentType == selectedAppointmentType)
-            .GroupBy(m => m.EarningDateTime())
-            .ToDictionary(
-                g => g.Key,
-                g => g.Sum(m => m.CalculateEarnings())
-            );
+        DateTime startDate = this.StartDatePicker.Date!.Value.Date;
+        DateTime endDate = this.EndDatePicker.Date!.Value.Date;
 
-        var totalEarnings = meetingsEarnings.Union(inventoryEarnings)
-            .GroupBy(kvp => kvp.Key)
-            .ToDictionary(
-                g => g.Key,
-                g => g.Sum(kvp => kvp.Value)
-            );
+        Dictionary<DateTime, int> totalEarnings = new();
+        Dictionary<DateTime, int> inventorySpendings = new();
 
-        Dictionary<DateTime, int> inventorySpendings = inventoryItemTransactions
-            .Where(m => this.AppointmentTypePicker.SelectedIndex == 0 || m.InventoryItemType.AppointmentType == selectedAppointmentType)
-            .GroupBy(m => m.SpendingDateTime())
-            .ToDictionary(
-                g => g.Key,
-                g => g.Sum(m => m.CalculateSpendings())
-            );
-        
-
-        if(this.StartDatePicker.Date.HasValue && this.EndDatePicker.Date.HasValue)
+        for (DateTime day = startDate; day <= endDate; day = day.AddDays(1))
         {
-            inventorySpendings = this.FilterByDate(this.StartDatePicker.Date.Value, this.EndDatePicker.Date.Value, inventorySpendings);
-            totalEarnings = this.FilterByDate(this.StartDatePicker.Date.Value, this.EndDatePicker.Date.Value, totalEarnings);
+            int dailyEarnings = 0;
+            int dailySpendings = 0;
+
+            foreach (var m in meetings)
+            {
+                if (!allTypes && m.AppointmentType != selectedAppointmentType)
+                    continue;
+
+                if (m.EarningDateTime().Date == day)
+                    dailyEarnings += m.CalculateEarnings();
+            }
+
+            foreach (var it in inventoryItemTransactions)
+            {
+                if (!allTypes && it.InventoryItemType.AppointmentType != selectedAppointmentType)
+                    continue;
+
+                if (it.EarningDateTime().Date == day)
+                    dailyEarnings += it.CalculateEarnings();
+
+                if (it.SpendingDateTime().Date == day)
+                    dailySpendings += it.CalculateSpendings();
+            }
+
+            totalEarnings[day] = dailyEarnings;
+            inventorySpendings[day] = dailySpendings;
         }
 
-        totalEarnings = totalEarnings.OrderBy(x => x.Key).ToDictionary();
-        inventorySpendings = inventorySpendings.OrderBy(x => x.Key).ToDictionary();
 
         SfCartesianChart chart = CreateBaseBaseLineChart();
         AddSeriesToChart(chart, totalEarnings, Colors.Green, "earned");

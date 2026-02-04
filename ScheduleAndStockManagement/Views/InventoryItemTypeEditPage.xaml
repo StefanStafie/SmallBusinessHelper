@@ -2,6 +2,7 @@
 <ContentPage 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:ScheduleAndStockManagement.Controls"
     x:Class="ScheduleAndStockManagement.Views.InventoryItemTypeEditPage"
     Title="Edit Inventory Item">
 
@@ -9,27 +10,23 @@
         <VerticalStackLayout Padding="20" Spacing="14">
 
             <Label Text="Name" FontAttributes="Bold"/>
-            <Entry x:Name="NameEntry"
+            <Entry Text="{Binding Name}" 
                    Placeholder="Enter item name"/>
 
             <Label Text="Appointment Type" FontAttributes="Bold"/>
-            <Picker x:Name="AppointmentTypePicker"
+            <Picker ItemsSource="{Binding PossibleAppointmentTypes}"
+                    SelectedItem="{Binding SelectedAppointmentType}"
                     Title="Select appointment type"/>
 
-            <Label Text="For Sale?" FontAttributes="Bold"/>
-            <CheckBox x:Name="ForSaleCheckbox"/>
-
-            <Label Text="Description" FontAttributes="Bold"/>
-            <Editor x:Name="DescriptionEntry"
-                    Placeholder="Enter description"
-                    AutoSize="TextChanges"/>
+            <Label Text="Designation" FontAttributes="Bold"/>
+            <controls:InventoryTypeSelector SelectedInventoryType="{Binding SelectedInventoryType}" />
 
             <Button Text="Save"
                     Clicked="OnSaveClicked"/>
 
             <Button Text="Delete"
                     Clicked="OnDeleteClicked"
-                    BackgroundColor="Red"
+                    BackgroundColor="{StaticResource DangerColor}"
                     TextColor="White"/>
 
         </VerticalStackLayout>

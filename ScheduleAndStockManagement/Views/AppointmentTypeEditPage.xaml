@@ -34,7 +34,7 @@
 
             <Button Text="Delete"
                     Clicked="OnDeleteClicked"
-                    BackgroundColor="Red"
+                    BackgroundColor="{StaticResource DangerColor}"
                     TextColor="White" />
 
         </VerticalStackLayout>

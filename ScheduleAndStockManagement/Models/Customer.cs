@@ -4,7 +4,8 @@ namespace ScheduleAndStockManagement.Models
 {
     public partial class Customer : ObservableObject
     {
-        public int Id { get; set; }
+        [ObservableProperty]
+        public int id;
 
         [ObservableProperty]
         public DateTime addedAt = DateTime.Now;
@@ -15,6 +16,9 @@ namespace ScheduleAndStockManagement.Models
         [ObservableProperty]
         public string phone = string.Empty;
 
+        [ObservableProperty]
+        public List<CustomerFile> customerFiles = new List<CustomerFile>();
+        
         public string NameAndPhone
         {
             get => $"{Name} ({Phone})";

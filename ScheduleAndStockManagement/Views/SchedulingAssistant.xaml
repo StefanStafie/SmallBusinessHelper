@@ -8,13 +8,12 @@
             View="Week"
             FirstDayOfWeek="Monday"
             AllowAppointmentDrag="True"
-            AppointmentsSource="{Binding Meetings}"
             AllowedViews="Day,Week,Agenda,TimelineWeek,Month,TimelineMonth"
             DoubleTapped="OnSchedulerDoubleTapped"
             Background="Beige">
 
         <scheduler:SfScheduler.CellSelectionView>
-            <scheduler:SchedulerCellSelectionView  Background="Red" CornerRadius="2"/>
+            <scheduler:SchedulerCellSelectionView  Background="{StaticResource ColorAccent}" CornerRadius="2"/>
         </scheduler:SfScheduler.CellSelectionView>
 
         <scheduler:SfScheduler.DragDropSettings>
@@ -27,7 +26,7 @@
         <scheduler:SfScheduler.AppointmentMapping>
              <scheduler:SchedulerAppointmentMapping
                 Id="Id"      
-                Subject="EventNameAndCustomer"
+                Subject="MeetingInfo"
                 StartTime="From"
                 EndTime="To"
                 Background="BackgroundColorBrush"

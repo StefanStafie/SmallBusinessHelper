@@ -30,14 +30,13 @@ public partial class CustomerPage : ContentPage
         );
     }
 
-    private async void OnCustomerSelected(object sender, SelectionChangedEventArgs e)
+    private async void OnCustomerTapped(object sender, TappedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is Customer selected)
-        {
-            await Navigation.PushAsync(
+        int selectedId = (CustomerList.SelectedItem as Customer).Id;
+        var selected = Items.First(x => x.Id == selectedId);
+        await Navigation.PushAsync(
                 new CustomerEditPage(selected, SaveItem)
             );
-        }
     }
 
     private void SaveItem(Customer item, bool isNew, bool isDeleted)
@@ -63,4 +62,20 @@ public partial class CustomerPage : ContentPage
             _ = _customerService.UpdateItemAsync(item);
         }
     }
+
+    private void OnFilterChanged(object sender, TextChangedEventArgs e)
+    {
+        string nameFilter = FilterName.Text?.ToLower() ?? "";
+        string phoneFilter = FilterPhone.Text?.ToLower() ?? "";
+        string dateFilter = FilterDate.Text?.ToLower() ?? "";
+
+        var filtered = Items.Where(item =>
+            (string.IsNullOrWhiteSpace(nameFilter) || item.Name.ToLower().Contains(nameFilter)) &&
+            (string.IsNullOrWhiteSpace(phoneFilter) || (item.Phone?.ToLower().Contains(phoneFilter) ?? false)) &&
+            (string.IsNullOrWhiteSpace(dateFilter) || item.AddedAt.ToString("dd.MM.yyyy").Contains(dateFilter))
+        ).ToList();
+
+        CustomerList.ItemsSource = filtered;
+    }
+
 }

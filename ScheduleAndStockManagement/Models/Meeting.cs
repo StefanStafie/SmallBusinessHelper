@@ -39,9 +39,11 @@ namespace ScheduleAndStockManagement.Models
             to = from.AddMinutes(newValue.DurationMinutes);
         }
 
-        public string EventNameAndCustomer => this.Customer != null && this.AppointmentType != null
-            ? $"{this.Customer.Name} - {this.AppointmentType.EventName}"
-            : string.Empty;
+        public string MeetingInfo =>
+            $"{(Customer?.Name != null ? Customer.Name + " - " : string.Empty)}" +
+            $"{AppointmentType?.EventName}" +
+            $"{(!string.IsNullOrWhiteSpace(Notes) ? $"\nNotes: {Notes}" : string.Empty)}" +
+            $"{(PriceLei > 0 ? $"\nPrice: {PriceLei}" : string.Empty)}";
 
         public Color BackgroundColor => AppointmentType != null
             ? AppointmentType.BackgroundColor
@@ -55,7 +57,7 @@ namespace ScheduleAndStockManagement.Models
 
         public override string ToString()
         {
-            return $"{EventNameAndCustomer}";
+            return MeetingInfo;
         }
 
         public int CalculateEarnings()

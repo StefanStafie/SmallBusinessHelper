@@ -45,7 +45,7 @@ public partial class SchedulingAssistantPage : ContentPage
         AppointmentTypes = _appointmentTypeService.GetItemsAsync().Result;
         Meetings = new ObservableCollection<Meeting>(_meetingService.GetItemsAsync().Result);
 
-        BindingContext = this;
+        scheduler.AppointmentsSource = Meetings;
         scheduler.AllowAppointmentDrag = true;
     }
     private void OnSchedulerAppointmentDrop(object? sender, AppointmentDropEventArgs e)

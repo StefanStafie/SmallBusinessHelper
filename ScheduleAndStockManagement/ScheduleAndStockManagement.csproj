@@ -99,6 +99,9 @@
 	  <Compile Update="Views\ChartDisplayPage.xaml.cs">
 	    <DependentUpon>ChartDisplayPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\CustomerDetailsPage.xaml.cs">
+	    <DependentUpon>CustomerDetailsPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\InventoryItemTransactionEditPage.xaml.cs">
 	    <DependentUpon>InventoryItemTransactionEditPage.xaml</DependentUpon>
 	  </Compile>
@@ -107,6 +110,9 @@
 	  </Compile>
 	  <Compile Update="Views\InventoryTransactionsPage.xaml.cs">
 	    <DependentUpon>InventoryTransactionsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Controls\InventoryTypeSelector.xaml.cs">
+	    <DependentUpon>InventoryTypeSelector.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\SchedulingAssistant.xaml.cs">
 	    <DependentUpon>SchedulingAssistant.xaml</DependentUpon>
@@ -118,6 +124,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ChartSelectionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CustomerDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\CustomerEditPage.xaml">
@@ -145,6 +154,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ChartDisplayPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\InventoryTypeSelector.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SchedulingAssistant.xaml">
